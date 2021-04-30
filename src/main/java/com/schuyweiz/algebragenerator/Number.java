@@ -33,6 +33,10 @@ public class Number implements Cloneable {
         return new Number(0);
     }
 
+    public void add(Number another, Number coef){
+            this.add(coef.getProd(another));
+    }
+
     public void add(Number another){
         this.add(another,1,1);
     }
@@ -43,8 +47,12 @@ public class Number implements Cloneable {
         }
 
         if (this.denom != another.denom){
-            this.denom = this.nom * coef * another.denom + this.denom* another.nom*coefAnother;
+            this.nom = this.nom * coef * another.denom + this.denom* another.nom*coefAnother;
             this.denom*= another.denom;;
+        }
+        if (nom == denom){
+            nom  =1;
+            denom = 1;
         }
     }
 
@@ -61,20 +69,39 @@ public class Number implements Cloneable {
             this.denom = this.nom * coef * another.denom - this.denom* another.nom*coefAnother;
             this.denom*= another.denom;
         }
+
+        if (nom == denom){
+            nom  =1;
+            denom = 1;
+        }
     }
 
     public void mult(Number another){
         this.nom*= another.nom;
         this.denom*= another.denom;
+        if(nom==0){
+            this.denom = 1;
+        }
+        if (nom == denom){
+            nom  =1;
+            denom = 1;
+        }
     }
 
     public void mult(int another){
         this.nom*=another;
+        if(nom==0){
+            this.denom = 1;
+        }
     }
 
     public Number getProd(Number another){
         int newNom = this.nom * another.nom;
         int newDen = this.denom * another.denom;
+
+        if(newNom==0){
+            return Number.nil();
+        }
         return  new Number(newNom,newDen);
     }
 
@@ -82,6 +109,10 @@ public class Number implements Cloneable {
     public void div(Number another){
         this.nom*= another.denom;
         this.denom*= another.nom;
+        if (nom == denom){
+            nom  =1;
+            denom = 1;
+        }
     }
 
     @Override

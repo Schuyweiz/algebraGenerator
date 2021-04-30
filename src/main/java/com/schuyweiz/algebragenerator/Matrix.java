@@ -13,8 +13,19 @@ public class Matrix implements Cloneable{
         this.rows.get(rowId).mult(coef);
     }
 
+    public void multRow(int rowId, Number coef){
+        this.rows.get(rowId).mult(coef);
+    }
+
     public void addRow(int fromId, int toId, int coef) throws Exception {
         this.rows.get(toId).add(this.rows.get(fromId), coef);
+    }
+    public void addRow(int fromId, int toId, Number coef) throws Exception {
+        this.rows.get(toId).add(this.rows.get(fromId), coef);
+    }
+
+    public void divRow(int rowId, int coef){
+        multRow(rowId,new Number(1,coef));
     }
 
     public void swapRow(int fromId, int toId){
@@ -42,6 +53,7 @@ public class Matrix implements Cloneable{
     }
 
     public Matrix mult(Matrix matrix) throws Exception {
+        matrix.convertRowsToCols();
         ArrayList<Row> newRows = new ArrayList<>();
         for (Row row:rows){
             ArrayList<Number> newRow = new ArrayList<>();
@@ -75,6 +87,14 @@ public class Matrix implements Cloneable{
             newMatrix.add(new Row(newRow));
         }
         return new Matrix(newMatrix);
+    }
+
+    public static Matrix diag(int width, ArrayList<Number> diagonal){
+        Matrix matrix = identity(width);
+        for (int i = 0; i < width; i++) {
+            matrix.rows.get(i).mult(diagonal.get(i));
+        }
+        return matrix;
     }
 
 

@@ -41,12 +41,29 @@ public class Row implements Cloneable {
         }
     }
 
+    public void mult(Number times){
+        for (int i = 0; i < size; i++) {
+            //this.content.set(i,this.content.get(i)*times);
+            this.content.get(i).mult(times);
+        }
+    }
+
     public void add(Row anotherRow, int coef) throws Exception {
         if (anotherRow.size != this.size)
             throw new Exception("Wrong rows sizes addition");
 
         for (int i = 0; i < size; i++) {
             this.content.get(i).add(anotherRow.get(i),1,coef);
+        }
+    }
+
+
+    public void add(Row anotherRow, Number coef) throws Exception {
+        if (anotherRow.size != this.size)
+            throw new Exception("Wrong rows sizes addition");
+
+        for (int i = 0; i < size; i++) {
+            this.content.get(i).add(anotherRow.get(i),coef);
         }
     }
 
