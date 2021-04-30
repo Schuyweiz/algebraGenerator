@@ -6,14 +6,13 @@ import java.util.Random;
 public class MatrixAddSubMul extends MatrixProblem{
 
     private final String sign;
-    private Random random;
 
     public MatrixAddSubMul(int randomSeed, int rows, int cols, String sign) throws Exception {
 
-        this.random = new Random(randomSeed);
+        this.rand = new Random(randomSeed);
 
-        this.firstTerm = Matrix.randomMatrix(this.random, -5,5,3,3);
-        this.secondTerm = Matrix.randomMatrix(this.random, -5,5,3,3);
+        this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
+        this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
 
         if (sign.equals("+"))
             this.answer = firstTerm.add(secondTerm);

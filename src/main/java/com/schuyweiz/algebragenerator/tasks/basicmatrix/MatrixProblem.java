@@ -5,6 +5,8 @@ import com.schuyweiz.algebragenerator.Matrix;
 import com.schuyweiz.algebragenerator.Row;
 import org.ejml.simple.SimpleMatrix;
 
+import java.util.Random;
+
 public abstract class MatrixProblem implements ProblemInterface {
 
         protected Matrix firstTerm;
@@ -12,6 +14,7 @@ public abstract class MatrixProblem implements ProblemInterface {
         protected Matrix answer;
         protected String problemText;
         protected String answerText;
+        protected Random rand;
 
 
         protected String getMatrixValues(Matrix matrix){

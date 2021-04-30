@@ -6,16 +6,30 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class Row {
-    private final ArrayList<Integer> content;
-    private final int size;
+public class Row implements Cloneable {
+    private ArrayList<Number> content;
+    private int size;
 
-    public int get(int id){
+    @Override
+    protected Object clone() throws CloneNotSupportedException{
+        Row row = new Row();
+        row.content = new ArrayList<>();
+        for (Number num: this.content){
+            row.content.add((Number) num.clone());
+        }
+        row.size = this.size;
+        return row;
+    }
+
+    public Row(){}
+
+
+    public Number get(int id){
         return content.get(id);
     }
 
 
-    public Row(ArrayList<Integer> content){
+    public Row(ArrayList<Number> content){
         this.content = content;
         this.size = content.size();
     }
@@ -23,45 +37,45 @@ public class Row {
     public void mult(int times){
         for (int i = 0; i < size; i++) {
             //this.content.set(i,this.content.get(i)*times);
-            this.content.set(i,this.content.get(i)*times);
+            this.content.get(i).mult(times);
         }
     }
 
-    public Row add(Row anotherRow) throws Exception {
+    public void add(Row anotherRow, int coef) throws Exception {
+        if (anotherRow.size != this.size)
+            throw new Exception("Wrong rows sizes addition");
+
+        for (int i = 0; i < size; i++) {
+            this.content.get(i).add(anotherRow.get(i),1,coef);
+        }
+    }
+
+    public void add(Row anotherRow) throws Exception {
+        this.add(anotherRow,1);
+    }
+
+
+    public void sub(Row anotherRow) throws Exception {
         if (anotherRow.size != this.size)
             throw new Exception("Wrong rows sizes addition");
 
         ArrayList<Integer> newRow = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            newRow.add(i,this.content.get(i) + anotherRow.content.get(i));
+            this.content.get(i).sub(anotherRow.get(i));
         }
-
-        return new Row(newRow);
     }
 
-    public Row sub(Row anotherRow) throws Exception {
-        if (anotherRow.size != this.size)
-            throw new Exception("Wrong rows sizes addition");
-
-        ArrayList<Integer> newRow = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            newRow.add(i,this.content.get(i) - anotherRow.content.get(i));
-        }
-
-        return new Row(newRow);
-    }
-
-    public int mult(Column column) throws Exception {
+    public Number mult(Column column) throws Exception {
         if (this.size != column.getSize()){
             throw new Exception("Wrong sizes for multiplication");
         }
 
-        int result=0;
+        Number number = Number.nil();
         for (int i = 0; i < size; i++) {
-            result += this.content.get(i) * column.getContent().get(i);
+            number.add(this.content.get(i).getProd(column.getContent().get(i)));
         }
 
-        return result;
+        return number;
     }
 
     public int getSize() {
@@ -70,7 +84,7 @@ public class Row {
 
     @Override
     public String toString(){
-        return this.content.stream().map(String::valueOf).collect(Collectors.joining("&"));
+        return this.content.stream().map(Number::toString).collect(Collectors.joining("&"));
     }
 
 
