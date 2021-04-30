@@ -1,0 +1,53 @@
+package com.schuyweiz.algebragenerator.tasks.basicmatrix;
+
+import com.schuyweiz.algebragenerator.Matrix;
+import java.util.Random;
+
+public class MatrixAddSubMul extends MatrixProblem{
+
+    private final String sign;
+    private Random random;
+
+    public MatrixAddSubMul(int randomSeed, int rows, int cols, String sign) throws Exception {
+
+        this.random = new Random(randomSeed);
+
+        this.firstTerm = Matrix.randomMatrix(this.random, -5,5,3,3);
+        this.secondTerm = Matrix.randomMatrix(this.random, -5,5,3,3);
+
+        if (sign.equals("+"))
+            this.answer = firstTerm.add(secondTerm);
+        if (sign.equals("-"))
+            this.answer = firstTerm.sub(secondTerm);
+        if (sign.equals("*"))
+            this.answer = firstTerm.mult(secondTerm);
+
+        this.sign = " " + sign + " ";
+
+    }
+
+    @Override
+    public String getProblemText() {
+        return null;
+    }
+
+    @Override
+    public String getAnswerText() {
+        return null;
+    }
+
+    @Override
+    public String getProblemContent() {
+        String firstTermString = getMatrixValues(this.firstTerm);
+        String secondTermString = getMatrixValues(this.secondTerm);
+
+        return firstTermString + sign + secondTermString;
+    }
+
+    @Override
+    public String getAnswerContent() {
+        return getProblemContent() + " = " + getMatrixValues(answer);
+    }
+
+
+}
