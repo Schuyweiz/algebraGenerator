@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class Column {
 
-    private ArrayList<Number> content;
+    private ArrayList<Fraction> content;
     private int size;
 
-    public Column(ArrayList<Number> content){
+    public Column(ArrayList<Fraction> content){
         this.content = content;
         this.size = content.size();
     }
@@ -17,7 +17,7 @@ public class Column {
         return size;
     }
 
-    public ArrayList<Number> getContent() {
+    public ArrayList<Fraction> getContent() {
         return content;
     }
 }

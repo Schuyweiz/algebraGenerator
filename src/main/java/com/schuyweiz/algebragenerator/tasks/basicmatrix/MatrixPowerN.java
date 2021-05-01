@@ -1,19 +1,22 @@
 package com.schuyweiz.algebragenerator.tasks.basicmatrix;
 
 import com.schuyweiz.algebragenerator.Matrix;
-import com.schuyweiz.algebragenerator.Number;
-import org.ejml.simple.SimpleMatrix;
+import com.schuyweiz.algebragenerator.Fraction;
+import com.schuyweiz.algebragenerator.Power;
+import com.schuyweiz.algebragenerator.PowerRate;
 
 import java.util.*;
 
 public class MatrixPowerN extends MatrixProblem {
 
-    //для создания задач такого типа будем пользоваться формой A = P D P^-1
+    //для создания задач такого типа будем пользоваться формой A = P Q P^-1
     private Matrix P;
     private Matrix invP;
-    private Matrix D;
-    private int width;
-    private ArrayList<ArrayList<Integer>> opOrder = new ArrayList<>();
+    private Matrix Q;
+    private Matrix Qn;
+    private Matrix A;
+    private final int width;
+    private final ArrayList<ArrayList<Integer>> opOrder = new ArrayList<>();
 
     public MatrixPowerN(int width, int seed) throws Exception {
         this.width = width;
@@ -21,14 +24,28 @@ public class MatrixPowerN extends MatrixProblem {
         this.P = Matrix.identity(width);
         this.invP = Matrix.identity(width);
         createMatrixP();
+        createMatrixQ();
+        createMatrixA();
     }
 
     private void createMatrixQ(){
-        ArrayList<Number> diagonal = new ArrayList<>();
+        ArrayList<Fraction> diagonal = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            diagonal.add(Number.getRandom(rand,-3,3));
+            diagonal.add(Fraction.getRandom(rand,-3,3));
         }
-        this.D = Matrix.diag(width,diagonal);
+        this.Q = Matrix.diag(width,diagonal);
+    }
+
+    private void createMatrixQn(){
+        ArrayList<Fraction> diagonal = new ArrayList<>();
+        for (int i = 0; i < width; i++) {
+            diagonal.add(new Power(Q.get(i,i),new PowerRate("n")));
+        }
+        this.Q = Matrix.diag(width,diagonal);
+    }
+
+    private void createMatrixA() throws Exception {
+        this.A = this.P.mult(Q).mult(invP);
     }
 
     private void createMatrixP() throws Exception {
@@ -119,7 +136,7 @@ public class MatrixPowerN extends MatrixProblem {
 
     @Override
     public String getProblemText() {
-        return null;
+        return "Найти n-ую степень матрциы";
     }
 
     @Override
@@ -129,14 +146,19 @@ public class MatrixPowerN extends MatrixProblem {
 
     @Override
     public String getProblemContent() {
-        String firstTermString = getMatrixValues(this.P);
-        String secondTermString = getMatrixValues(this.invP);
 
-        return firstTermString + " * " + secondTermString;
+        String aString = getMatrixValues(this.A);
+
+        return String.format("%s^{%s}",aString,"n");
     }
 
     @Override
     public String getAnswerContent() {
-        return null;
+        String pString = getMatrixValues(this.P);
+        String pInvString = getMatrixValues(this.invP);
+        String qnString = getMatrixValues(this.Qn);
+
+        return pString + qnString + pInvString;
+
     }
 }

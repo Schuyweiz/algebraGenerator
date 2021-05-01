@@ -3,19 +3,18 @@ package com.schuyweiz.algebragenerator;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class Row implements Cloneable {
-    private ArrayList<Number> content;
+    private ArrayList<Fraction> content;
     private int size;
 
     @Override
     protected Object clone() throws CloneNotSupportedException{
         Row row = new Row();
         row.content = new ArrayList<>();
-        for (Number num: this.content){
-            row.content.add((Number) num.clone());
+        for (Fraction num: this.content){
+            row.content.add((Fraction) num.clone());
         }
         row.size = this.size;
         return row;
@@ -24,12 +23,12 @@ public class Row implements Cloneable {
     public Row(){}
 
 
-    public Number get(int id){
+    public Fraction get(int id){
         return content.get(id);
     }
 
 
-    public Row(ArrayList<Number> content){
+    public Row(ArrayList<Fraction> content){
         this.content = content;
         this.size = content.size();
     }
@@ -41,7 +40,7 @@ public class Row implements Cloneable {
         }
     }
 
-    public void mult(Number times){
+    public void mult(Fraction times){
         for (int i = 0; i < size; i++) {
             //this.content.set(i,this.content.get(i)*times);
             this.content.get(i).mult(times);
@@ -58,7 +57,7 @@ public class Row implements Cloneable {
     }
 
 
-    public void add(Row anotherRow, Number coef) throws Exception {
+    public void add(Row anotherRow, Fraction coef) throws Exception {
         if (anotherRow.size != this.size)
             throw new Exception("Wrong rows sizes addition");
 
@@ -82,17 +81,17 @@ public class Row implements Cloneable {
         }
     }
 
-    public Number mult(Column column) throws Exception {
+    public Fraction mult(Column column) throws Exception {
         if (this.size != column.getSize()){
             throw new Exception("Wrong sizes for multiplication");
         }
 
-        Number number = Number.nil();
+        Fraction fraction = Fraction.nil();
         for (int i = 0; i < size; i++) {
-            number.add(this.content.get(i).getProd(column.getContent().get(i)));
+            fraction.add(this.content.get(i).getProd(column.getContent().get(i)));
         }
 
-        return number;
+        return fraction;
     }
 
     public int getSize() {
@@ -101,7 +100,7 @@ public class Row implements Cloneable {
 
     @Override
     public String toString(){
-        return this.content.stream().map(Number::toString).collect(Collectors.joining("&"));
+        return this.content.stream().map(Fraction::toString).collect(Collectors.joining("&"));
     }
 
 

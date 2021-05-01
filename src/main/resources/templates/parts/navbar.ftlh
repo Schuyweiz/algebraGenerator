@@ -20,6 +20,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="/basicmatrixop">Сложение/Вычитание/Умножение матриц</a></li>
                         <li><a class="dropdown-item" href="#">Поиск ранга матрицы</a></li>
+                        <li><a class="dropdown-item" href="/powern">Поиск n-ой степени матрицы</a></li>
                     </ul>
                 </li>
             </ul>

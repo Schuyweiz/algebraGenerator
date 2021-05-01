@@ -2,46 +2,49 @@ package com.schuyweiz.algebragenerator;
 
 import java.util.Random;
 
-public class Number implements Cloneable {
+public class Fraction implements Cloneable {
+
+    public Fraction() {
+    }
 
     @Override
     public Object clone() throws CloneNotSupportedException{
-        Number number = nil();
-        number.nom = this.nom;
-        number.denom = this.denom;
-        return number;
+        Fraction fraction = nil();
+        fraction.nom = this.nom;
+        fraction.denom = this.denom;
+        return fraction;
     }
 
 
     private int nom;
     private int denom;
 
-    public Number(int nom, int denom){
+    public Fraction(int nom, int denom){
         this.nom = nom;
         this.denom = denom;
     }
-    public Number(int nom){
+    public Fraction(int nom){
         this.nom = nom;
         this.denom = 1;
     }
 
-    public static Number getRandom(Random random, int min, int max){
-        return new Number(random.nextInt(max-min) + min+1);
+    public static Fraction getRandom(Random random, int min, int max){
+        return new Fraction(random.nextInt(max-min) + min+1);
     }
 
-    public static Number nil(){
-        return new Number(0);
+    public static Fraction nil(){
+        return new Fraction(0);
     }
 
-    public void add(Number another, Number coef){
+    public void add(Fraction another, Fraction coef){
             this.add(coef.getProd(another));
     }
 
-    public void add(Number another){
+    public void add(Fraction another){
         this.add(another,1,1);
     }
 
-    public void add(Number another, int coef, int coefAnother){
+    public void add(Fraction another, int coef, int coefAnother){
         if (this.denom == another.denom){
             this.nom= this.nom*coef +  another.nom * coefAnother;
         }
@@ -56,11 +59,11 @@ public class Number implements Cloneable {
         }
     }
 
-    public void sub(Number another){
+    public void sub(Fraction another){
         this.sub(another, 1,1);
     }
 
-    public void sub(Number another, int coef, int coefAnother){
+    public void sub(Fraction another, int coef, int coefAnother){
         if (this.denom == another.denom){
             this.nom= this.nom*coef - another.nom*coefAnother;
         }
@@ -76,7 +79,7 @@ public class Number implements Cloneable {
         }
     }
 
-    public void mult(Number another){
+    public void mult(Fraction another){
         this.nom*= another.nom;
         this.denom*= another.denom;
         if(nom==0){
@@ -95,24 +98,36 @@ public class Number implements Cloneable {
         }
     }
 
-    public Number getProd(Number another){
+    public Fraction getProd(Fraction another){
         int newNom = this.nom * another.nom;
         int newDen = this.denom * another.denom;
 
         if(newNom==0){
-            return Number.nil();
+            return Fraction.nil();
         }
-        return  new Number(newNom,newDen);
+        return  new Fraction(newNom,newDen);
     }
 
 
-    public void div(Number another){
+    public void div(Fraction another){
         this.nom*= another.denom;
         this.denom*= another.nom;
         if (nom == denom){
             nom  =1;
             denom = 1;
         }
+    }
+
+    public int getNom() {
+        return nom;
+    }
+
+    public int getDenom() {
+        return denom;
+    }
+
+    public boolean isPositive() {
+        return (nom>0 && denom >0) || (nom<0 && denom<0);
     }
 
     @Override
