@@ -40,12 +40,12 @@ public class MatrixAddSubMul extends MatrixProblem{
         String firstTermString = getMatrixValues(this.firstTerm);
         String secondTermString = getMatrixValues(this.secondTerm);
 
-        return firstTermString + sign + secondTermString;
+        return String.format("\\(%s\\)",firstTermString + sign + secondTermString);
     }
 
     @Override
     public String getAnswerContent() {
-        return getProblemContent() + " = " + getMatrixValues(answer);
+        return String.format("\\(%s\\)", getProblemContent() + " = " + getMatrixValues(answer));
     }
 
 

@@ -4,17 +4,22 @@ package com.schuyweiz.algebragenerator;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import org.matheclipse.core.eval.interfaces.INumeric;
+import org.matheclipse.core.expression.IntegerSym;
+import org.matheclipse.core.interfaces.IExpr;
+import symjava.symbolic.*;
+
 
 public class Row implements Cloneable {
-    private ArrayList<Fraction> content;
+    private ArrayList<IExpr> content;
     private int size;
 
     @Override
     protected Object clone() throws CloneNotSupportedException{
         Row row = new Row();
         row.content = new ArrayList<>();
-        for (Fraction num: this.content){
-            row.content.add((Fraction) num.clone());
+        for (IExpr num: this.content){
+            row.content.add(num);
         }
         row.size = this.size;
         return row;
@@ -23,75 +28,85 @@ public class Row implements Cloneable {
     public Row(){}
 
 
-    public Fraction get(int id){
+    public IExpr get(int id){
         return content.get(id);
     }
 
 
-    public Row(ArrayList<Fraction> content){
+    public Row(ArrayList<IExpr> content){
         this.content = content;
         this.size = content.size();
     }
 
-    public void mult(int times){
+    public Row mult(int times){
+        ArrayList<IExpr> row = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             //this.content.set(i,this.content.get(i)*times);
-            this.content.get(i).mult(times);
+            var newNum = this.content.get(i).multiply(times);
+            row.add(newNum);
         }
+        return new Row(row);
     }
 
-    public void mult(Fraction times){
+    public Row mult(IExpr times){
+        ArrayList<IExpr> row = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             //this.content.set(i,this.content.get(i)*times);
-            this.content.get(i).mult(times);
+            var newNum = this.content.get(i).multiply(times);
+            row.add(newNum);
         }
+        return new Row(row);
     }
 
-    public void add(Row anotherRow, int coef) throws Exception {
-        if (anotherRow.size != this.size)
-            throw new Exception("Wrong rows sizes addition");
-
+    public Row add(Row anotherRow, int coef) throws Exception {
+        ArrayList<IExpr> row = new ArrayList<>();
+        var tempRow = anotherRow.mult(coef);
         for (int i = 0; i < size; i++) {
-            this.content.get(i).add(anotherRow.get(i),1,coef);
+            //this.content.set(i,this.content.get(i)*times);
+            var newNum = this.content.get(i).add(tempRow.get(i));
+            row.add(newNum);
         }
+        return new Row(row);
     }
 
 
-    public void add(Row anotherRow, Fraction coef) throws Exception {
-        if (anotherRow.size != this.size)
-            throw new Exception("Wrong rows sizes addition");
-
+    public Row add(Row anotherRow, IExpr coef) throws Exception {
+        ArrayList<IExpr> row = new ArrayList<>();
+        var tempRow = anotherRow.mult(coef);
         for (int i = 0; i < size; i++) {
-            this.content.get(i).add(anotherRow.get(i),coef);
+            //this.content.set(i,this.content.get(i)*times);
+            var newNum = this.content.get(i).add(tempRow.get(i));
+            row.add(newNum);
         }
+        return new Row(row);
     }
 
-    public void add(Row anotherRow) throws Exception {
-        this.add(anotherRow,1);
+    public Row add(Row anotherRow) throws Exception {
+        return this.add(anotherRow,1);
     }
 
 
-    public void sub(Row anotherRow) throws Exception {
-        if (anotherRow.size != this.size)
-            throw new Exception("Wrong rows sizes addition");
-
-        ArrayList<Integer> newRow = new ArrayList<>();
+    public Row sub(Row anotherRow) throws Exception {
+        ArrayList<IExpr> row = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            this.content.get(i).sub(anotherRow.get(i));
+            //this.content.set(i,this.content.get(i)*times);
+            var newNum = this.content.get(i).subtract(anotherRow.get(i));
+            row.add(newNum);
         }
+        return new Row(row);
     }
 
-    public Fraction mult(Column column) throws Exception {
+    public IExpr mult(Column column) throws Exception {
         if (this.size != column.getSize()){
             throw new Exception("Wrong sizes for multiplication");
         }
 
-        Fraction fraction = Fraction.nil();
+        IExpr result = IntegerSym.valueOf(0);
         for (int i = 0; i < size; i++) {
-            fraction.add(this.content.get(i).getProd(column.getContent().get(i)));
+            result = result.add(this.content.get(i).multiply(column.getContent().get(i)));
         }
 
-        return fraction;
+        return result;
     }
 
     public int getSize() {
@@ -100,7 +115,8 @@ public class Row implements Cloneable {
 
     @Override
     public String toString(){
-        return this.content.stream().map(Fraction::toString).collect(Collectors.joining("&"));
+
+        return this.content.stream().map(IExpr::toString).collect(Collectors.joining("&"));
     }
 
 

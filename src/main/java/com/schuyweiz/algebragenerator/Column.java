@@ -2,12 +2,15 @@ package com.schuyweiz.algebragenerator;
 
 import java.util.ArrayList;
 
+import org.matheclipse.core.interfaces.IExpr;
+import symjava.symbolic.Expr;
+
 public class Column {
 
-    private ArrayList<Fraction> content;
+    private ArrayList<IExpr> content;
     private int size;
 
-    public Column(ArrayList<Fraction> content){
+    public Column(ArrayList<IExpr> content){
         this.content = content;
         this.size = content.size();
     }
@@ -17,7 +20,7 @@ public class Column {
         return size;
     }
 
-    public ArrayList<Fraction> getContent() {
+    public ArrayList<IExpr> getContent() {
         return content;
     }
 }

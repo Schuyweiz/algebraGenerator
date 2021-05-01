@@ -5,6 +5,6 @@ public interface ProblemInterface {
     String getProblemText();
     String getAnswerText();
     String getProblemContent();
-    String getAnswerContent();
+    String getAnswerContent() throws Exception;
 
 }

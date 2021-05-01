@@ -1,9 +1,12 @@
 package com.schuyweiz.algebragenerator.tasks.basicmatrix;
 
 import com.schuyweiz.algebragenerator.Matrix;
-import com.schuyweiz.algebragenerator.Fraction;
-import com.schuyweiz.algebragenerator.Power;
-import com.schuyweiz.algebragenerator.PowerRate;
+import com.schuyweiz.algebragenerator.ExprUtils;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.interfaces.IExpr;
+import symjava.symbolic.Expr;
+import symjava.symbolic.Pow;
+import symjava.symbolic.Symbol;
 
 import java.util.*;
 
@@ -26,22 +29,23 @@ public class MatrixPowerN extends MatrixProblem {
         createMatrixP();
         createMatrixQ();
         createMatrixA();
+        createMatrixQn();
     }
 
     private void createMatrixQ(){
-        ArrayList<Fraction> diagonal = new ArrayList<>();
+        ArrayList<IExpr> diagonal = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            diagonal.add(Fraction.getRandom(rand,-3,3));
+            diagonal.add(ExprUtils.getRandom(rand,-3,3));
         }
         this.Q = Matrix.diag(width,diagonal);
     }
 
     private void createMatrixQn(){
-        ArrayList<Fraction> diagonal = new ArrayList<>();
+        ArrayList<IExpr> diagonal = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            diagonal.add(new Power(Q.get(i,i),new PowerRate("n")));
+            diagonal.add(F.Power(Q.get(i,i),F.Dummy("n")));
         }
-        this.Q = Matrix.diag(width,diagonal);
+        this.Qn = Matrix.diag(width,diagonal);
     }
 
     private void createMatrixA() throws Exception {
@@ -125,8 +129,8 @@ public class MatrixPowerN extends MatrixProblem {
         }
 
         if (operation == 2){
-            int coef =op.get(1);
-            int to = op.get(2);
+            int to = op.get(1);
+            int coef =op.get(2);
 
             id.divRow(to, coef);
         }
@@ -149,16 +153,15 @@ public class MatrixPowerN extends MatrixProblem {
 
         String aString = getMatrixValues(this.A);
 
-        return String.format("%s^{%s}",aString,"n");
+        return String.format("\\(%s^{%s}\\)",aString,"n");
     }
 
     @Override
-    public String getAnswerContent() {
-        String pString = getMatrixValues(this.P);
-        String pInvString = getMatrixValues(this.invP);
-        String qnString = getMatrixValues(this.Qn);
+    public String getAnswerContent() throws Exception {
+        Matrix m = this.P.mult(this.Qn).mult(this.invP);
+        String pInvString = getMatrixValues(m);
 
-        return pString + qnString + pInvString;
+        return String.format("\\(%s\\)",pInvString);
 
     }
 }

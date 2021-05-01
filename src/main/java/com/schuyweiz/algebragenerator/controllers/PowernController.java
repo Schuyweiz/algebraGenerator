@@ -1,12 +1,14 @@
 package com.schuyweiz.algebragenerator.controllers;
 
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Map;
 import java.util.Random;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixPowerN;
 
+@Controller
 public class PowernController {
     private static final Random rand = new Random();
 
@@ -15,7 +17,7 @@ public class PowernController {
             Map<String, Object> model
     ) throws Exception {
 
-        int seed =  new Random().nextInt(10);
+        int seed =  rand.nextInt(10);
         MatrixPowerN problem = new MatrixPowerN(3,seed);
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();

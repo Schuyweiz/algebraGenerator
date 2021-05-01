@@ -3,27 +3,39 @@ package com.schuyweiz.algebragenerator;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.matheclipse.core.expression.FractionSym;
+import org.matheclipse.core.expression.IntegerSym;
+import org.matheclipse.core.interfaces.IExpr;
+import symjava.symbolic.Divide;
+import symjava.symbolic.Expr;
+
+
 public class Matrix implements Cloneable{
 
 
     //region elementary operations
     public void multRow(int rowId, int coef){
-        this.rows.get(rowId).mult(coef);
+        var temp = this.rows.get(rowId).mult(coef);
+        rows.set(rowId,temp);
     }
 
-    public void multRow(int rowId, Fraction coef){
-        this.rows.get(rowId).mult(coef);
+    public void multRow(int rowId, IExpr coef){
+        var temp = this.rows.get(rowId).mult(coef);
+        rows.set(rowId,temp);
     }
 
     public void addRow(int fromId, int toId, int coef) throws Exception {
-        this.rows.get(toId).add(this.rows.get(fromId), coef);
+        var temp = this.rows.get(toId).add(this.rows.get(fromId), coef);
+        rows.set(toId,temp);
     }
-    public void addRow(int fromId, int toId, Fraction coef) throws Exception {
-        this.rows.get(toId).add(this.rows.get(fromId), coef);
+    public void addRow(int fromId, int toId, IExpr coef) throws Exception {
+        var temp = this.rows.get(toId).add(this.rows.get(fromId), coef);
+        rows.set(toId,temp);
     }
 
     public void divRow(int rowId, int coef){
-        multRow(rowId,new Fraction(1,coef));
+        IExpr e = FractionSym.valueOf(1,coef);
+        multRow(rowId, e);
     }
 
     public void swapRow(int fromId, int toId){
@@ -35,26 +47,26 @@ public class Matrix implements Cloneable{
     //endregion
 
     public Matrix sub(Matrix another) throws Exception {
-        Matrix newMatrix = new Matrix(rows);
+        ArrayList<Row> newRows = new ArrayList<>();
         for (int i = 0; i < this.rows.size(); i++) {
-            newMatrix.getRows().get(i).sub(another.rows.get(i));
+            newRows.add(getRows().get(i).sub(another.rows.get(i)));
         }
-        return newMatrix;
+        return new Matrix(newRows);
     }
 
-    public Matrix add(Matrix matrix) throws Exception {
-        Matrix newMatrix = new Matrix(rows);
+    public Matrix add(Matrix another) throws Exception {
+        ArrayList<Row> newRows = new ArrayList<>();
         for (int i = 0; i < this.rows.size(); i++) {
-            newMatrix.rows.get(i).add(matrix.getRows().get(i));
+            newRows.add(getRows().get(i).add(another.rows.get(i)));
         }
-        return newMatrix;
+        return new Matrix(newRows);
     }
 
     public Matrix mult(Matrix matrix) throws Exception {
         matrix.convertRowsToCols();
         ArrayList<Row> newRows = new ArrayList<>();
         for (Row row:rows){
-            ArrayList<Fraction> newRow = new ArrayList<>();
+            ArrayList<IExpr> newRow = new ArrayList<>();
             for (int i = 0; i < matrix.width; i++) {
                 newRow.add(row.mult(matrix.cols.get(i)));
             }
@@ -66,9 +78,9 @@ public class Matrix implements Cloneable{
     public static Matrix randomMatrix(Random rand, int boundL, int boundR, int height, int width){
         ArrayList<Row> rows = new ArrayList<>();
         for (int i = 0; i < height; i++) {
-            ArrayList<Fraction> row = new ArrayList<>();
+            ArrayList<IExpr> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                row.add(Fraction.getRandom(rand,boundL,boundR));
+                row.add(ExprUtils.getRandom(rand,boundL,boundR));
             }
             rows.add(new Row(row));
         }
@@ -78,19 +90,20 @@ public class Matrix implements Cloneable{
     public static Matrix identity(int width){
         ArrayList<Row> newMatrix = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            ArrayList<Fraction> newRow = new ArrayList<>();
+            ArrayList<IExpr> newRow = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                newRow.add(i==j? new Fraction(1):new Fraction(0));
+                newRow.add(i==j? IntegerSym.valueOf(1):IntegerSym.valueOf(0));
             }
             newMatrix.add(new Row(newRow));
         }
         return new Matrix(newMatrix);
     }
 
-    public static Matrix diag(int width, ArrayList<Fraction> diagonal){
+    public static Matrix diag(int width, ArrayList<IExpr> diagonal){
         Matrix matrix = identity(width);
         for (int i = 0; i < width; i++) {
-            matrix.rows.get(i).mult(diagonal.get(i));
+            var temp = matrix.rows.get(i).mult(diagonal.get(i));
+            matrix.rows.set(i,temp);
         }
         return matrix;
     }
@@ -104,7 +117,7 @@ public class Matrix implements Cloneable{
         return rows;
     }
 
-    public Fraction get(int row, int col){
+    public IExpr get(int row, int col){
         return this.rows.get(row).get(col);
     }
 
@@ -143,7 +156,7 @@ public class Matrix implements Cloneable{
     private void convertRowsToCols(){
         ArrayList<Column> cols = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            ArrayList<Fraction> newCol = new ArrayList<>();
+            ArrayList<IExpr> newCol = new ArrayList<>();
             for (int j = 0; j < height; j++) {
                 newCol.add(rows.get(j).get(i));
             }
