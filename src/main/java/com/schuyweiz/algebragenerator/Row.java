@@ -116,7 +116,11 @@ public class Row implements Cloneable {
     @Override
     public String toString(){
 
-        return this.content.stream().map(IExpr::toString).collect(Collectors.joining("&"));
+        ArrayList<String> arr = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            arr.add(ExprUtils.getExpression(content.get(i)));
+        }
+        return String.join("&", arr);
     }
 
 

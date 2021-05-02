@@ -161,7 +161,8 @@ public class MatrixPowerN extends MatrixProblem {
         Matrix m = this.P.mult(this.Qn).mult(this.invP);
         String pInvString = getMatrixValues(m);
 
-        return String.format("\\(%s\\)",pInvString);
+        return String.format("\\( %s%s%s = %s\\)",
+                getMatrixValues(P),getMatrixValues(Qn),getMatrixValues(invP),pInvString);
 
     }
 }

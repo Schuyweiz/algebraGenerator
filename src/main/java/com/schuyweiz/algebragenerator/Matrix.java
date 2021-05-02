@@ -3,6 +3,7 @@ package com.schuyweiz.algebragenerator;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.matheclipse.core.expression.F;
 import org.matheclipse.core.expression.FractionSym;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
@@ -34,7 +35,7 @@ public class Matrix implements Cloneable{
     }
 
     public void divRow(int rowId, int coef){
-        IExpr e = FractionSym.valueOf(1,coef);
+        IExpr e = F.Power(IntegerSym.valueOf(coef),IntegerSym.valueOf(-1));
         multRow(rowId, e);
     }
 
