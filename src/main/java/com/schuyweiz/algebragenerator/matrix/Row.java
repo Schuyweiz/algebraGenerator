@@ -1,13 +1,16 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.matrix;
 
 
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-import org.matheclipse.core.eval.interfaces.INumeric;
+import com.schuyweiz.algebragenerator.utility.ExprUtils;
+import org.matheclipse.core.eval.EvalEngine;
+import org.matheclipse.core.eval.ExprEvaluator;
+import org.matheclipse.core.eval.TeXUtilities;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
-import symjava.symbolic.*;
 
 
 public class Row implements Cloneable {
@@ -116,9 +119,15 @@ public class Row implements Cloneable {
     @Override
     public String toString(){
 
+        StringWriter wr = new StringWriter();
+        TeXUtilities tu = new TeXUtilities(new EvalEngine(),false);
         ArrayList<String> arr = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            arr.add(ExprUtils.getExpression(content.get(i)));
+            //arr.add(ExprUtils.getExpression(util.eval(content.get(i))));
+            tu.toTeX(content.get(i),wr);
+            arr.add(wr.toString());
+            wr.getBuffer().setLength(0);
+            wr.getBuffer().trimToSize();
         }
         return String.join("&", arr);
     }

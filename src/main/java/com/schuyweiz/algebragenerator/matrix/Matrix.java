@@ -1,14 +1,12 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.matrix;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.expression.F;
-import org.matheclipse.core.expression.FractionSym;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
-import symjava.symbolic.Divide;
-import symjava.symbolic.Expr;
 
 
 public class Matrix implements Cloneable{

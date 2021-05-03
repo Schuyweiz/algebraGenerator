@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.matrix;
 
 import java.util.ArrayList;
 

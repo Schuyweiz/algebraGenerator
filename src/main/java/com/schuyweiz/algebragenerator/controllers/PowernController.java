@@ -18,7 +18,7 @@ public class PowernController {
     ) throws Exception {
 
         int seed =  rand.nextInt(10);
-        MatrixPowerN problem = new MatrixPowerN(3,0);
+        MatrixPowerN problem = new MatrixPowerN(3,seed);
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();
         model.put("problem", problemContent);

@@ -1,6 +1,6 @@
 package com.schuyweiz.algebragenerator.tasks.basicmatrix;
 
-import com.schuyweiz.algebragenerator.Matrix;
+import com.schuyweiz.algebragenerator.matrix.Matrix;
 import java.util.Random;
 
 public class MatrixAddSubMul extends MatrixProblem{

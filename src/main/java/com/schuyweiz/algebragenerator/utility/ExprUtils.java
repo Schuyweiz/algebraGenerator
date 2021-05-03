@@ -1,11 +1,7 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.utility;
 
-import de.lab4inf.math.functions.Power;
-import org.apache.tomcat.util.buf.B2CConverter;
 import org.matheclipse.core.expression.*;
 import org.matheclipse.core.interfaces.IExpr;
-import symjava.symbolic.Expr;
-import symjava.symbolic.Pow;
 
 import java.util.Random;
 
@@ -16,12 +12,34 @@ public class ExprUtils {
         return IntegerSym.valueOf(num);
     }
 
+    public static IExpr getRandomNonNull(Random rand, int left, int right){
+        IExpr rhs;
+        if (left<0){
+            rhs = getRandom(rand, 1,right);
+        }
+        else if (left!=0){
+            return getRandom(rand, left, right);
+        }
+        else{
+            return getRandom(rand,1,right);
+        }
+
+        boolean isPositive = rand.nextBoolean();
+
+        if (isPositive){
+            return rhs;
+        }
+        else{
+            return rhs.times(IntegerSym.valueOf(-1));
+        }
+    }
+
     public static String getExpression(IExpr expr){
 
         if (expr instanceof FractionSym){
             var fraction = ((FractionSym) expr);
 
-            if (fraction.isNegative()){
+            if (fraction.isNegativeSigned()){
                 return String.format("-\\frac{%s}{%s}",
                         fraction.numerator().abs().toString(),
                         fraction.denominator().abs().toString());
@@ -38,7 +56,7 @@ public class ExprUtils {
             if (operation.equals("Plus")){
                 sb.append(getExpression(expr.getAt(1)));
                 for (int i = 2; i < expr.size(); i++) {
-                    String sign = expr.getAt(i).isPositive()?" + ":" - ";
+                    String sign = expr.getAt(i).isNegativeSigned()?"":" + ";
                     sb.append(sign).append(getExpression(expr.getAt(i)) );
                 }
             }
@@ -75,24 +93,5 @@ public class ExprUtils {
         }
 
 
-    }
-
-    private static String convertSingle(IExpr expr){
-        if (expr.size() == 0){
-            return expr.toString();
-        }
-
-        if (expr instanceof B2){
-            var b2Expr = ((B2) expr);
-            return String.format("%s^{%s}",
-                    b2Expr.arg1().toString(),b2Expr.arg2().toString());
-        }
-
-        if (expr instanceof FractionSym){
-            var fractionExpr = ((FractionSym) expr);
-            return String.format("\\frac{%s}{%s}", fractionExpr.getAt(0), fractionExpr.getAt(1));
-        }
-
-        return expr.toString();
     }
 }
