@@ -3,7 +3,6 @@ package com.schuyweiz.algebragenerator.matrix;
 import java.util.ArrayList;
 
 import org.matheclipse.core.interfaces.IExpr;
-import symjava.symbolic.Expr;
 
 public class Column {
 

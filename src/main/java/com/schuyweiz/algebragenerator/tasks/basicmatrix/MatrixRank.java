@@ -26,8 +26,7 @@ public class MatrixRank extends MatrixProblem {
         initialMatrix = getMatrixValues(matrix);
         int commandsAmt = rand.nextInt(3)+4;
         this.commands = initCommands(commandsAmt,height,4);
-        shuffleMatrix(commandsAmt);
-
+        this.matrix = shuffleMatrix(commandsAmt, matrix);
     }
 
     private void createRankMatrix(int width, int height){
@@ -47,12 +46,6 @@ public class MatrixRank extends MatrixProblem {
         }
 
         this.matrix = new Matrix(rows);
-    }
-
-    private void shuffleMatrix(int times) throws Exception {
-        for (int i = 0; i < times; i++) {
-            this.matrix = this.elementaryOperation(commands.get(i), matrix );
-        }
     }
 
 
@@ -80,7 +73,5 @@ public class MatrixRank extends MatrixProblem {
     private Matrix matrix;
     private final String initialMatrix;
     private final int rank;
-    private final ArrayList<ElementaryCommand> commands;
-
 
 }

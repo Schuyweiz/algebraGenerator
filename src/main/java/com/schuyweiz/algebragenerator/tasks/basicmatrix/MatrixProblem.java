@@ -15,6 +15,14 @@ public abstract class MatrixProblem implements ProblemInterface {
         protected String problemText;
         protected String answerText;
         protected Random rand;
+        protected ArrayList<ElementaryCommand> commands;
+
+        protected Matrix shuffleMatrix(int times, Matrix matrix) throws Exception {
+                for (int i = 0; i < times; i++) {
+                        matrix = this.elementaryOperation(commands.get(i), matrix );
+                }
+                return matrix;
+        }
 
 
         protected String getMatrixValues(Matrix matrix){

@@ -45,7 +45,7 @@ public class MatrixAddSubMul extends MatrixProblem{
 
     @Override
     public String getAnswerContent() {
-        return String.format("\\(%s\\)", getProblemContent() + " = " + getMatrixValues(answer));
+        return String.format("\\(%s\\)", getMatrixValues(answer));
     }
 
 
