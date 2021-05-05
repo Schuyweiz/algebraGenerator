@@ -1,5 +1,6 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.tasks.basicmatrix;
 
+import com.schuyweiz.algebragenerator.ElementaryCommand;
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.matrix.Row;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixProblem;
@@ -13,15 +14,19 @@ import java.util.Random;
 
 public class MatrixRank extends MatrixProblem {
 
-    private Matrix matrix;
-    private int rank;
 
-    public MatrixRank(int seed){
+
+    public MatrixRank(int seed) throws Exception {
         this.rand = new Random(seed);
         int width  = rand.nextInt(4)+2;
         int height = rand.nextInt(3)+2;
+        rank = rand.nextInt(height-1)+2;
 
         createRankMatrix(width, height);
+        initialMatrix = getMatrixValues(matrix);
+        int commandsAmt = rand.nextInt(3)+4;
+        this.commands = initCommands(commandsAmt,height,4);
+        shuffleMatrix(commandsAmt);
 
     }
 
@@ -32,7 +37,7 @@ public class MatrixRank extends MatrixProblem {
         for (int i = 0; i < height; i++) {
             ArrayList<IExpr> exprs = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                if (j>=indent)
+                if (j>=indent && i<rank)
                     exprs.add(ExprUtils.getRandomNonNull(rand,1,5));
                 else
                     exprs.add(IntegerSym.valueOf(0));
@@ -44,26 +49,38 @@ public class MatrixRank extends MatrixProblem {
         this.matrix = new Matrix(rows);
     }
 
+    private void shuffleMatrix(int times) throws Exception {
+        for (int i = 0; i < times; i++) {
+            this.matrix = this.elementaryOperation(commands.get(i), matrix );
+        }
+    }
+
 
     @Override
     public String getProblemText() {
-        return null;
+        return "Найти ранг матрицы ";
     }
 
     @Override
     public String getAnswerText() {
-        return null;
+        return "Ранг матрицы равен ";
     }
 
     @Override
     public String getProblemContent() {
-        return null;
+        String matrixString = getMatrixValues(matrix);
+        return String.format("\\(%s\\)",matrixString);
     }
 
     @Override
     public String getAnswerContent() throws Exception {
-        return null;
+        return String.format("\\( %s rank = %s \\)", initialMatrix, rank);
     }
+
+    private Matrix matrix;
+    private final String initialMatrix;
+    private final int rank;
+    private final ArrayList<ElementaryCommand> commands;
 
 
 }

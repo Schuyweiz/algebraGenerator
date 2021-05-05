@@ -18,7 +18,7 @@ public class MatrixPowerN extends MatrixProblem {
     private Matrix A;
     private final int width;
     private final ArrayList<ArrayList<Integer>> opOrder = new ArrayList<>();
-    private final ArrayList<ElementaryCommand> commands = new ArrayList<>();
+    private final ArrayList<ElementaryCommand> commands;
 
     public MatrixPowerN(int width, int seed) throws Exception {
         this.width = width;
@@ -26,7 +26,7 @@ public class MatrixPowerN extends MatrixProblem {
         this.P = Matrix.identity(width);
         this.invP = Matrix.identity(width);
         int commandsAmnt = rand.nextInt(3)+2;
-        initCommands(commandsAmnt,width,3);
+        this.commands = initCommands(commandsAmnt,width,3);
         createMatrixP();
         createMatrixInvP();
         createMatrixQ();
@@ -34,20 +34,7 @@ public class MatrixPowerN extends MatrixProblem {
         createMatrixQn();
     }
 
-    private void initCommands(int amount, int sizeLimit, int coefLimit){
-        for (int i = 0; i < amount; i++) {
-            int from = rand.nextInt(sizeLimit);
-            int to = rand.nextInt(sizeLimit);
-            int coef = rand.nextInt(coefLimit) + 1;
-            int type = rand.nextInt(3);
-            if (type==0)
-                commands.add(new ElementaryCommand(type,from, to));
-            if (type==1)
-                commands.add(new ElementaryCommand(type,from, to, coef));
-            if (type==2)
-                commands.add(new ElementaryCommand(type, from, coef));
-        }
-    }
+
 
     private void createMatrixQ(){
         ArrayList<IExpr> diagonal = new ArrayList<>();

@@ -89,5 +89,23 @@ public abstract class MatrixProblem implements ProblemInterface {
 
         }
 
+        protected ArrayList<ElementaryCommand> initCommands(int amount, int sizeLimit, int coefLimit){
+                ArrayList<ElementaryCommand> commands = new ArrayList<>();
+                for (int i = 0; i < amount; i++) {
+                        int from = rand.nextInt(sizeLimit);
+                        int to = rand.nextInt(sizeLimit);
+                        int coef = rand.nextInt(coefLimit) + 1;
+                        int type = rand.nextInt(3);
+                        if (type==0)
+                                commands.add(new ElementaryCommand(type,from, to));
+                        if (type==1)
+                                commands.add(new ElementaryCommand(type,from, to, coef));
+                        if (type==2)
+                                commands.add(new ElementaryCommand(type, from, coef));
+                }
+
+                return commands;
+        }
+
 
 }
