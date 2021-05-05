@@ -67,4 +67,11 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>symja_android_library</id>
+      <url>https://github.com/axkr/symja_android_library.git</url>
+    </repository>
+  </repositories>
 </project>
