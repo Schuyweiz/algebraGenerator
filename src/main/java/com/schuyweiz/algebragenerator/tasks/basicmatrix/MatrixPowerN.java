@@ -26,7 +26,7 @@ public class MatrixPowerN extends MatrixProblem {
         this.P = Matrix.identity(width);
         this.invP = Matrix.identity(width);
         int commandsAmnt = rand.nextInt(3)+2;
-        this.commands = initCommands(commandsAmnt,width,3);
+        this.commands = initCommands(commandsAmnt,width,3,1,2);
         createMatrixP();
         createMatrixInvP();
         createMatrixQ();
@@ -91,7 +91,7 @@ public class MatrixPowerN extends MatrixProblem {
         Matrix m = this.P.mult(this.Qn).mult(this.invP);
         String pInvString = getMatrixValues(m);
 
-        return String.format("\\( %s%s%s = %s\\)",
+        return String.format("\\( %s%s%s \\\\= %s\\)",
                 getMatrixValues(P),getMatrixValues(Qn),getMatrixValues(invP),pInvString);
 
     }

@@ -3,6 +3,8 @@ package com.schuyweiz.algebragenerator.tasks.basicmatrix;
 
 import com.schuyweiz.algebragenerator.ElementaryCommand;
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import org.matheclipse.core.expression.IntegerSym;
+import org.matheclipse.core.reflection.system.In;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -51,9 +53,9 @@ public abstract class MatrixProblem implements ProblemInterface {
                         int coef = command.getCoef();
 
                         if(from == to){
-                                matrix.multRow(from,coef+1);
+                                matrix.multRow(from, IntegerSym.valueOf(coef+1));
                         }else{
-                                matrix.addRow(from,to,coef);
+                                matrix.addRow(from,to,IntegerSym.valueOf(coef));
                         }
                 }
 
@@ -61,7 +63,7 @@ public abstract class MatrixProblem implements ProblemInterface {
                         int coef = command.getCoef();
                         int to = command.getTo();
 
-                        matrix.multRow(to, coef);
+                        matrix.multRow(to, IntegerSym.valueOf(coef));
                 }
                 return matrix;
         }
@@ -81,9 +83,9 @@ public abstract class MatrixProblem implements ProblemInterface {
                         int coef = command.getCoef();
 
                         if(from == to){
-                                id.divRow(from,coef+1);
+                                id.divRow(from,IntegerSym.valueOf(coef+1));
                         }else{
-                                id.addRow(from,to,-coef);
+                                id.addRow(from,to,IntegerSym.valueOf(-coef));
                         }
                 }
 
@@ -91,25 +93,21 @@ public abstract class MatrixProblem implements ProblemInterface {
                         int coef = command.getCoef();
                         int to = command.getTo();
 
-                        id.divRow(to, coef);
+                        id.divRow(to, IntegerSym.valueOf(coef));
                 }
                 return matrix.mult(id);
 
         }
 
-        protected ArrayList<ElementaryCommand> initCommands(int amount, int sizeLimit, int coefLimit){
+        protected ArrayList<ElementaryCommand> initCommands(int amount, int sizeLimit, int coefLimit, Integer... types){
                 ArrayList<ElementaryCommand> commands = new ArrayList<>();
                 for (int i = 0; i < amount; i++) {
                         int from = rand.nextInt(sizeLimit);
                         int to = rand.nextInt(sizeLimit);
                         int coef = rand.nextInt(coefLimit) + 1;
-                        int type = rand.nextInt(3);
-                        if (type==0)
-                                commands.add(new ElementaryCommand(type,from, to));
-                        if (type==1)
-                                commands.add(new ElementaryCommand(type,from, to, coef));
-                        if (type==2)
-                                commands.add(new ElementaryCommand(type, from, coef));
+                        int typeId = rand.nextInt(types.length);
+                        int type = types[typeId];
+                        commands.add(new ElementaryCommand(type,from, to, coef));
                 }
 
                 return commands;

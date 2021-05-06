@@ -22,4 +22,8 @@ public class Column {
     public ArrayList<IExpr> getContent() {
         return content;
     }
+
+    public void set(int i, IExpr newValue){
+        this.content.set(i, newValue);
+    }
 }

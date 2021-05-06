@@ -21,6 +21,10 @@ public class PowernController {
         MatrixPowerN problem = new MatrixPowerN(3,seed);
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();
+        String problemText = problem.getProblemText();
+
+
+        model.put("problemtext", problemText);
         model.put("problem", problemContent);
         model.put("answer", answerContent);
         return "powern";

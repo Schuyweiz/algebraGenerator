@@ -16,7 +16,7 @@
     </body>
     </html>
 </#macro>
-
+//TODO: add an argument of a page title
 <#macro mjpage>
     <!DOCTYPE html>
     <html>
@@ -37,7 +37,7 @@
     </head>
     <body>
     <#include "navbar.ftlh">
-    <div class = "container mt-5">
+    <div class="container-fluid mt-5">
         <#nested>
     </div>
     </body>

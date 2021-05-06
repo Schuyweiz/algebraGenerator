@@ -36,8 +36,8 @@ public class InverseMatrix extends MatrixProblem{
         int coef3 = rand.nextInt(3)+1;
 
         matrix.multRow(term1,IntegerSym.valueOf(0));
-        matrix.addRow(term2,term1,coef2);
-        matrix.addRow(term2, term3, coef3);
+        matrix.addRow(term2,term1,IntegerSym.valueOf(coef2));
+        matrix.addRow(term2, term3, IntegerSym.valueOf(coef3));
     }
 
     @Override

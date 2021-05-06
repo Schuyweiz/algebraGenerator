@@ -1,7 +1,12 @@
 <#import "parts/common.ftlh" as c>
 <@c.mjpage>
-<p>Задача
+    <div class="col-1">
+    <p>Задача
     ${problem}</p>
-<p>Ответ
+    </div>
+
+    <div class="col-2">
+    <p>Ответ
     ${answer}</p>
+    </div>
 </@c.mjpage>
