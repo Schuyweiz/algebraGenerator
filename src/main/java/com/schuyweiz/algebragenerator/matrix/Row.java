@@ -1,21 +1,17 @@
 package com.schuyweiz.algebragenerator.matrix;
 
 
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
 
-import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.eval.EvalEngine;
-import org.matheclipse.core.eval.ExprEvaluator;
 import org.matheclipse.core.eval.TeXUtilities;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
 
 
 public class Row implements Cloneable {
-    private ArrayList<IExpr> content;
-    private int size;
+
 
     @Override
     protected Object clone() throws CloneNotSupportedException{
@@ -34,6 +30,9 @@ public class Row implements Cloneable {
     public IExpr get(int id){
         return content.get(id);
     }
+    public void set(int id, IExpr newValue){
+        this.content.set(id, newValue);
+    }
 
 
     public Row(ArrayList<IExpr> content){
@@ -41,15 +40,7 @@ public class Row implements Cloneable {
         this.size = content.size();
     }
 
-    public Row mult(int times){
-        ArrayList<IExpr> row = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            //this.content.set(i,this.content.get(i)*times);
-            var newNum = this.content.get(i).multiply(times);
-            row.add(newNum);
-        }
-        return new Row(row);
-    }
+
 
     public Row mult(IExpr times){
         ArrayList<IExpr> row = new ArrayList<>();
@@ -60,18 +51,6 @@ public class Row implements Cloneable {
         }
         return new Row(row);
     }
-
-    public Row add(Row anotherRow, int coef) throws Exception {
-        ArrayList<IExpr> row = new ArrayList<>();
-        var tempRow = anotherRow.mult(coef);
-        for (int i = 0; i < size; i++) {
-            //this.content.set(i,this.content.get(i)*times);
-            var newNum = this.content.get(i).add(tempRow.get(i));
-            row.add(newNum);
-        }
-        return new Row(row);
-    }
-
 
     public Row add(Row anotherRow, IExpr coef) throws Exception {
         ArrayList<IExpr> row = new ArrayList<>();
@@ -85,9 +64,8 @@ public class Row implements Cloneable {
     }
 
     public Row add(Row anotherRow) throws Exception {
-        return this.add(anotherRow,1);
+        return this.add(anotherRow,IntegerSym.valueOf(1));
     }
-
 
     public Row sub(Row anotherRow) throws Exception {
         ArrayList<IExpr> row = new ArrayList<>();
@@ -132,6 +110,7 @@ public class Row implements Cloneable {
         return String.join("&", arr);
     }
 
-
+    private ArrayList<IExpr> content;
+    private int size;
 
 }

@@ -12,32 +12,59 @@ import org.matheclipse.core.interfaces.IExpr;
 public class Matrix implements Cloneable{
 
 
-    //region elementary operations
+    //region elementary operations on rows
 
     public void multRow(int rowId, IExpr coef){
         var temp = this.rows.get(rowId).mult(coef);
         rows.set(rowId,temp);
-        this.setRowCols(rowId);
+        this.updateCols(rowId);
     }
 
     public void addRow(int fromId, int toId, IExpr coef) throws Exception {
         var temp = this.rows.get(toId).add(this.rows.get(fromId), coef);
         rows.set(toId,temp);
-        this.setRowCols(toId);
+        this.updateCols(toId);
     }
 
     public void divRow(int rowId, IExpr coef){
         IExpr e = F.Power(coef,IntegerSym.valueOf(-1));
         multRow(rowId, e);
-        this.setRowCols(rowId);
+        this.updateCols(rowId);
     }
 
     public void swapRow(int fromId, int toId){
         Row temp = this.rows.get(fromId);
         this.rows.set(fromId,this.rows.get(toId));
         this.rows.set(toId,temp);
-        setRowCols(fromId);
-        setRowCols(toId);
+        updateCols(fromId);
+        updateCols(toId);
+    }
+    //endregion
+
+    //region elementary operations on columns
+
+    public void multCol(int colId, IExpr coef){
+        var temp = cols.get(colId).mult(coef);
+        cols.set(colId,temp);
+        updateRows(colId);
+    }
+    public void addCol(int from, int to, IExpr coef) throws Exception {
+        var temp = cols.get(to).add(cols.get(from), coef);
+        cols.set(to,temp);
+        updateRows(to);
+    }
+    public void divCol(int at, IExpr coef){
+        IExpr e = F.Power(coef,IntegerSym.valueOf(-1));
+        multCol(at,e);
+        updateRows(at);
+
+    }
+    public void swapCol(int from, int to){
+        var temp = cols.get(from);
+        cols.set(from,cols.get(to));
+        cols.set(to, temp);
+        updateRows(to);
+        updateRows(from);
     }
 
     //endregion
@@ -46,10 +73,18 @@ public class Matrix implements Cloneable{
     private void setCol(int i, int j, IExpr newValue){
         this.cols.get(j).set(i,newValue);
     }
+    private void setRow(int i, int j, IExpr newValue){
+        this.rows.get(i).set(j,newValue);
+    }
 
-    private void setRowCols(int i){
-        for (int j = 0; j < cols.size(); j++) {
-            setCol(i,j, rows.get(i).get(j));
+    private void updateCols(int at){
+        for (int colId = 0; colId < cols.size(); colId++) {
+            setCol(at,colId, rows.get(at).get(colId));
+        }
+    }
+    private void updateRows(int at){
+        for (int i = 0; i < rows.size(); i++) {
+            setRow(at,i,cols.get(i).get(at));
         }
     }
 
