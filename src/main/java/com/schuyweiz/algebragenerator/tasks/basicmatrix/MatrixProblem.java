@@ -113,5 +113,9 @@ public abstract class MatrixProblem implements ProblemInterface {
                 return commands;
         }
 
+        protected String texExpression(String expr){
+                return String.format("\\( %s \\)", expr);
+        }
+
 
 }

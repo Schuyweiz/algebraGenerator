@@ -1,6 +1,7 @@
 package com.schuyweiz.algebragenerator.matrix;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
@@ -20,7 +21,7 @@ public class Matrix implements Cloneable{
         this.updateCols(rowId);
     }
 
-    public void addRow(int fromId, int toId, IExpr coef) throws Exception {
+    public void addRow(int fromId, int toId, IExpr coef) {
         var temp = this.rows.get(toId).add(this.rows.get(fromId), coef);
         rows.set(toId,temp);
         this.updateCols(toId);
@@ -69,27 +70,6 @@ public class Matrix implements Cloneable{
 
     //endregion
 
-
-    private void setCol(int i, int j, IExpr newValue){
-        this.cols.get(j).set(i,newValue);
-    }
-    private void setRow(int i, int j, IExpr newValue){
-        this.rows.get(i).set(j,newValue);
-    }
-
-    private void updateCols(int at){
-        for (int colId = 0; colId < cols.size(); colId++) {
-            setCol(at,colId, rows.get(at).get(colId));
-        }
-    }
-    private void updateRows(int at){
-        for (int i = 0; i < rows.size(); i++) {
-            setRow(at,i,cols.get(i).get(at));
-        }
-    }
-
-
-
     //region matrix basic operations
     public Matrix sub(Matrix another) throws Exception {
         ArrayList<Row> newRows = new ArrayList<>();
@@ -122,12 +102,13 @@ public class Matrix implements Cloneable{
 
     //endregion
 
+    //region static matrix generators
     public static Matrix randomMatrix(Random rand, int boundL, int boundR, int height, int width){
         ArrayList<Row> rows = new ArrayList<>();
         for (int i = 0; i < height; i++) {
             ArrayList<IExpr> row = new ArrayList<>();
             for (int j = 0; j < width; j++) {
-                row.add(ExprUtils.getRandom(rand,boundL,boundR));
+                row.add(ExprUtils.getPositiveRandom(rand,boundL,boundR));
             }
             rows.add(new Row(row));
         }
@@ -155,15 +136,15 @@ public class Matrix implements Cloneable{
         return matrix;
     }
 
+    //endregion
+
 
     public int getHeight() {
         return height;
     }
-
     public ArrayList<Row> getRows() {
         return rows;
     }
-
     public IExpr get(int row, int col){
         return this.rows.get(row).get(col);
     }
@@ -197,6 +178,68 @@ public class Matrix implements Cloneable{
         this.cols = cols;
     }
 
+    private void setCol(int i, int j, IExpr newValue){
+        this.cols.get(j).set(i,newValue);
+    }
+    private void setRow(int i, int j, IExpr newValue){
+        this.rows.get(i).set(j,newValue);
+    }
+
+    private void updateCols(int at){
+        for (int colId = 0; colId < cols.size(); colId++) {
+            setCol(at,colId, rows.get(at).get(colId));
+        }
+    }
+    private void updateRows(int at){
+        for (int i = 0; i < rows.size(); i++) {
+            setRow(i,at,cols.get(at).get(i));
+        }
+    }
+
+    public void strongShuffle(Random rand, int left, int right){
+        int size = height;
+        ArrayList<Integer> order = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            order.add(i);
+        }
+        for (int i = 0; i < size; i++) {
+            Collections.swap(order, rand.nextInt(size), rand.nextInt(size));
+        }
+
+        int first = order.get(0);
+        for (int i = 0; i < size - 2; i++) {
+            addRow(first, order.get(i+1), ExprUtils.getRandomNonNull(rand,left, right));
+        }
+
+        int second = order.get(size-1);
+
+        for (int i = 0; i < size - 2; i++) {
+            addRow(second, order.get(i+1), ExprUtils.getRandomNonNull(rand,left, right));
+        }
+
+        int nonZero = 0;
+        for (int i = 0; i < cols.size(); i++) {
+            var col = cols.get(i);
+            if (col.isWeak()){
+                for (int j = 0; j < col.getSize(); j++) {
+                    if (!col.get(j).equals(IntegerSym.valueOf(0))){
+                        nonZero = j;
+                        break;
+                    }
+                }
+            }
+        }
+
+        addRow(nonZero,getId(size, nonZero,rand),ExprUtils.getRandomNonNull(rand,left,right));
+
+        for (int i = 0; i < size; i++) {
+            addRow(order.get(i),getId(size,order.get(i),rand),ExprUtils.getRandom(rand,left,right));
+        }
+    }
+
+    private int getId(int size, int current, Random random){
+        return (current + random.nextInt(size-1))%size;
+    }
 
 
     private final ArrayList<Row> rows;

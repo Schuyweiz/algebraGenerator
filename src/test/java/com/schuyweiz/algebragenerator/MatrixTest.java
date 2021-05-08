@@ -36,7 +36,7 @@ class MatrixTest {
     }
 
     @Test
-    void testcolop(){
+    void testcolop() throws Exception {
         ArrayList<Row> rows = new ArrayList<Row>();
 
         for (int i = 0; i < 3; i++) {
@@ -49,6 +49,10 @@ class MatrixTest {
 
         Matrix matrix = new Matrix(rows);
 
+        matrix.multCol(0,IntegerSym.valueOf(2));
+        matrix.addCol(0,1,IntegerSym.valueOf(2));
+        matrix.divCol(0,IntegerSym.valueOf(2));
+        matrix.swapCol(0,1);
 
     }
 

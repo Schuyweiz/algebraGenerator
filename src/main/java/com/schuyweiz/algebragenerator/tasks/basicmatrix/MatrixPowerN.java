@@ -39,7 +39,7 @@ public class MatrixPowerN extends MatrixProblem {
     private void createMatrixQ(){
         ArrayList<IExpr> diagonal = new ArrayList<>();
         for (int i = 0; i < width; i++) {
-            diagonal.add(ExprUtils.getRandom(rand,-3,3));
+            diagonal.add(ExprUtils.getPositiveRandom(rand,-3,3));
         }
         this.Q = Matrix.diag(width,diagonal);
     }

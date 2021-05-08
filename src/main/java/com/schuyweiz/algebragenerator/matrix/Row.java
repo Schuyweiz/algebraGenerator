@@ -52,7 +52,7 @@ public class Row implements Cloneable {
         return new Row(row);
     }
 
-    public Row add(Row anotherRow, IExpr coef) throws Exception {
+    public Row add(Row anotherRow, IExpr coef){
         ArrayList<IExpr> row = new ArrayList<>();
         var tempRow = anotherRow.mult(coef);
         for (int i = 0; i < size; i++) {

@@ -1,6 +1,7 @@
 package com.schuyweiz.algebragenerator.controllers;
 
 
+import com.schuyweiz.algebragenerator.tasks.basicmatrix.FindEigenvalues;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
 
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,19 @@ public class BasicMatrixController {
         return "basicmatrixop";
     }
 
+    @GetMapping("/eigenvalues")
+    public String eigenvalues(
+            Map<String, Object> model
+    ) throws Exception {
+
+        int seed =  new Random().nextInt(10);
+        FindEigenvalues problem = new FindEigenvalues(seed);
+        String problemContent = problem.getProblemContent();
+        String answerContent = problem.getAnswerContent();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+        return "eigenvalues";
+    }
     private String generateSign(){
         int value = rand.nextInt(3);
         return value==0? "+"
