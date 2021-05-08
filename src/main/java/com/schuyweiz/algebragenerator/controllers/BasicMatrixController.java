@@ -35,6 +35,7 @@ public class BasicMatrixController {
     ) throws Exception {
 
         int seed =  new Random().nextInt(10);
+        System.out.println(seed);
         FindEigenvalues problem = new FindEigenvalues(seed);
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();

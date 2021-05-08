@@ -26,6 +26,7 @@
                         <li><a class="dropdown-item" href="/matrixrank">Поиск ранга матрицы</a></li>
                         <li><a class="dropdown-item" href="/powern">Поиск n-ой степени матрицы</a></li>
                         <li><a class="dropdown-item" href="/matrixinv">Определить обратимость матрицы</a></li>
+                        <li><a class="dropdown-item" href="/eigenvalues">Найти собственные значения</a></li>
                     </ul>
                 </li>
             </ul>

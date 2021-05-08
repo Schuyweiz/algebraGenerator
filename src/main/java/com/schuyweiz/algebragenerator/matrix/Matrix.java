@@ -187,7 +187,9 @@ public class Matrix implements Cloneable{
 
     private void updateCols(int at){
         for (int colId = 0; colId < cols.size(); colId++) {
-            setCol(at,colId, rows.get(at).get(colId));
+                setCol(at,colId,
+                        rows.get(at).get(colId));
+
         }
     }
     private void updateRows(int at){
@@ -208,46 +210,41 @@ public class Matrix implements Cloneable{
     public Matrix strongShuffle(Random rand, int left, int right){
         var inverseMatrix = new Matrix(this.rows);
 
-        int size = height;
         ArrayList<Integer> order = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < height; i++) {
             order.add(i);
         }
-        for (int i = 0; i < size; i++) {
-            Collections.swap(order, rand.nextInt(size), rand.nextInt(size));
+        for (int i = 0; i < height; i++) {
+            Collections.swap(order, rand.nextInt(height), rand.nextInt(height));
         }
         int first = order.get(0);
-        for (int i = 0; i < size - 2; i++) {
+        for (int i = 0; i < height - 2; i++) {
             IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
 
             this.multCurrent(
-                    elementaryOpAdd(first, order.get(i+1),coef,size)
+                    elementaryOpAdd(first, order.get(i+1),coef,width)
             );
 
-            inverseMatrix = elementaryOpAdd(first, order.get(i+1),coef.negative(),size).mult(inverseMatrix);
+            inverseMatrix = elementaryOpAdd(first, order.get(i+1),coef.negative(),width).mult(inverseMatrix);
 
         }
-        System.out.println(this.mult(inverseMatrix));
 
-        int second = order.get(size-1);
+        int second = order.get(height-1);
 
-        for (int i = 0; i < size - 2; i++) {
+        for (int i = 0; i < height - 2; i++) {
             IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
 
             this.multCurrent(
-                    elementaryOpAdd(second, order.get(i),coef,size)
+                    elementaryOpAdd(second, order.get(i),coef,width)
             );
-            inverseMatrix = elementaryOpAdd(second, order.get(i),coef.negative(),size).mult(inverseMatrix);
+            inverseMatrix = elementaryOpAdd(second, order.get(i),coef.negative(),width).mult(inverseMatrix);
         }
-
-        System.out.println(this.mult(inverseMatrix));
 
         int nonZero = 0;
-        for (int i = 0; i < cols.size(); i++) {
-            var col = cols.get(i);
-            if (col.isWeak()){
+        for (Column col : cols) {
+            if (col.isWeak()) {
                 for (int j = 0; j < col.getSize(); j++) {
-                    if (!col.get(j).equals(IntegerSym.valueOf(0))){
+                    if (!col.get(j).equals(IntegerSym.valueOf(0))) {
                         nonZero = j;
                         break;
                     }
@@ -255,29 +252,73 @@ public class Matrix implements Cloneable{
             }
         }
         IExpr tempCoef = ExprUtils.getRandomNonNull(rand,left, right);
-        int tempId = getId(size, nonZero,rand);
+        int tempId = getId(height, nonZero,rand);
         this.multCurrent(
-                elementaryOpAdd(nonZero,tempId,tempCoef,size)
+                elementaryOpAdd(nonZero,tempId,tempCoef,width)
         );
 
-        inverseMatrix = elementaryOpAdd(nonZero, tempId, tempCoef.negative(),size).mult(inverseMatrix);
+        inverseMatrix = elementaryOpAdd(nonZero, tempId, tempCoef.negative(),width).mult(inverseMatrix);
 
-
-        System.out.println(this.mult(inverseMatrix));
-
-        for (int i = 0; i < size; i++) {
-            int id = getId(size, i,rand);
+        for (int i = 0; i < height; i++) {
+            int id = getId(height, i,rand);
             IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
 
             this.multCurrent(
-                    elementaryOpAdd(order.get(i),id, coef,size)
+                    elementaryOpAdd(i,id, coef,width)
             );
-            inverseMatrix = elementaryOpAdd(order.get(i), id, coef.negative(),size).mult(inverseMatrix);
+            inverseMatrix = elementaryOpAdd(i, id, coef.negative(),width).mult(inverseMatrix);
 
         }
-        System.out.println(this.mult(inverseMatrix));
-
         return inverseMatrix;
+    }
+
+    public void simpleShuffle(Random rand, int left, int right){
+        ArrayList<Integer> order = new ArrayList<>();
+        for (int i = 0; i < height; i++) {
+            order.add(i);
+        }
+        for (int i = 0; i < height; i++) {
+            Collections.swap(order, rand.nextInt(height), rand.nextInt(height));
+        }
+
+        int first = order.get(0);
+        for (int i = 0; i < height - 2; i++) {
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+            this.addRow(first, order.get(i),coef);
+        }
+
+        int second = order.get(height-1);
+
+        for (int i = 0; i < height - 2; i++) {
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+            this.addRow(second, order.get(i),coef);
+        }
+
+        int nonZero = 0;
+        for (Column col : cols) {
+            if (col.isWeak()) {
+                for (int j = 0; j < col.getSize(); j++) {
+                    if (!col.get(j).equals(IntegerSym.valueOf(0))) {
+                        nonZero = j;
+                        break;
+                    }
+                }
+            }
+        }
+        IExpr tempCoef = ExprUtils.getRandomNonNull(rand,left, right);
+        int tempId = getId(height, nonZero,rand);
+        this.addRow(nonZero,tempId,tempCoef);
+
+        for (int i = 0; i < height; i++) {
+            int id = getId(height, i,rand);
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+            addRow(order.get(i), id, coef);
+        }
+
+        for (int i = 0; i < height; i++) {
+            int id = getId(height, i,rand);
+            swapRow(order.get(i), id);
+        }
     }
 
 

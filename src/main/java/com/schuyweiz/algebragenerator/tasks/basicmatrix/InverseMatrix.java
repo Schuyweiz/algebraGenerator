@@ -45,8 +45,9 @@ public class InverseMatrix extends MatrixProblem{
     @Override
     public String getProblemContent() {
         String matrixString = getMatrixValues(matrix);
+        String reverseString = getMatrixValues(this.inverse);
 
-        return String.format("\\(%s\\)",matrixString);
+        return String.format("\\(%s %s\\)",matrixString, reverseString);
     }
 
     @Override

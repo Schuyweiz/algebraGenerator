@@ -12,15 +12,18 @@ public class FindEigenvalues extends MatrixProblem{
 
     ArrayList<IExpr> eigenvalues;
     Matrix matrix;
+    Matrix A;
+    Matrix invA;
 
 
     public FindEigenvalues(int seed) throws Exception {
         this.rand = new Random(seed);
         initEigenvalues();
         this.matrix = Matrix.diag(3,eigenvalues);
-        int shuffleTimes = rand.nextInt(3)+1;
-        for (int i = 0; i < 3; i++) {
-            eigenvaluesShuffle();
+        for (int i = 0; i < 1; i++) {
+            A = Matrix.identity(3);
+            invA = A.strongShuffle(rand,-3,3);
+            matrix = invA.mult(matrix).mult(A);
         }
     }
 
@@ -59,7 +62,8 @@ public class FindEigenvalues extends MatrixProblem{
     @Override
     public String getProblemContent() {
         return texExpression(
-                String.format("%s", getMatrixValues(matrix))
+                String.format("%s  %s  %s \n %s", getMatrixValues(matrix), getMatrixValues(A), getMatrixValues(invA),
+                        getMatrixValues(A.mult(invA)))
         );
     }
 

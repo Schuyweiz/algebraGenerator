@@ -21,9 +21,7 @@ public class MatrixRank extends MatrixProblem {
 
         createRankMatrix(width, height);
         initialMatrix = getMatrixValues(matrix);
-        int commandsAmt = rand.nextInt(3)+4;
-        this.commands = initCommands(commandsAmt,height,4);
-        this.matrix = shuffleMatrix(commandsAmt, matrix);
+        matrix.simpleShuffle(rand,-2,4);
     }
 
     private void createRankMatrix(int width, int height){
