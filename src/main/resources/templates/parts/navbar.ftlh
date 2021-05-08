@@ -27,6 +27,7 @@
                         <li><a class="dropdown-item" href="/powern">Поиск n-ой степени матрицы</a></li>
                         <li><a class="dropdown-item" href="/matrixinv">Определить обратимость матрицы</a></li>
                         <li><a class="dropdown-item" href="/eigenvalues">Найти собственные значения</a></li>
+                        <li><a class="dropdown-item" href="/jordan">Привести к форме Жордана</a></li>
                     </ul>
                 </li>
             </ul>

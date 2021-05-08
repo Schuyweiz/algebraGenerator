@@ -1,6 +1,7 @@
 package com.schuyweiz.algebragenerator.controllers;
 
 
+import com.schuyweiz.algebragenerator.JordanCanonical;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.FindEigenvalues;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
 
@@ -48,5 +49,20 @@ public class BasicMatrixController {
         return value==0? "+"
                 : value == 1? "-"
                 : "*";
+    }
+
+    @GetMapping("/jordan")
+    public String jordan(
+            Map<String, Object> model
+    ) throws Exception {
+
+        int seed =  new Random().nextInt(10);
+        System.out.println(seed);
+        JordanCanonical problem = new JordanCanonical(seed);
+        String problemContent = problem.getProblemContent();
+        String answerContent = problem.getAnswerContent();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+        return "jordan";
     }
 }
