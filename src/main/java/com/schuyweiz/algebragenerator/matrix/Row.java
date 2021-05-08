@@ -77,11 +77,7 @@ public class Row implements Cloneable {
         return new Row(row);
     }
 
-    public IExpr mult(Column column) throws Exception {
-        if (this.size != column.getSize()){
-            throw new Exception("Wrong sizes for multiplication");
-        }
-
+    public IExpr mult(Column column) {
         IExpr result = IntegerSym.valueOf(0);
         for (int i = 0; i < size; i++) {
             result = result.add(this.content.get(i).multiply(column.getContent().get(i)));

@@ -8,7 +8,7 @@ import java.util.Random;
 public class ExprUtils {
 
     public static IExpr getPositiveRandom(Random rand, int left, int right){
-        int num = rand.nextInt(right-left) + right+1;
+        int num = left + rand.nextInt(right - left+1);
         return IntegerSym.valueOf(num);
     }
     public static IExpr getRandom(Random rand, int left, int right){

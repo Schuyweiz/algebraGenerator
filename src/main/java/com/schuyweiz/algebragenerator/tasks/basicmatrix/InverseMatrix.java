@@ -8,22 +8,14 @@ import java.util.Random;
 public class InverseMatrix extends MatrixProblem{
 
     private Matrix matrix;
+    private Matrix inverse;
     private boolean isInvertible =true;
-    private final String initialMatrix;
 
     public InverseMatrix(int seed) throws Exception {
         this.rand = new Random(seed+1);
-        this.matrix = Matrix.identity(rand.nextInt(2)+ 3);
+        this.matrix = Matrix.identity(3);
 
-        if (rand.nextInt(10)<3){
-            isInvertible = false;
-            transform(matrix);
-        }
-        initialMatrix = getMatrixValues(matrix);
-        int commandsAmt = rand.nextInt(3)+3;
-        commands = initCommands(commandsAmt,matrix.getHeight(),4);
-
-        matrix = shuffleMatrix(commandsAmt,matrix);
+        inverse = matrix.strongShuffle(rand,-3,3);
     }
 
     private void transform(Matrix matrix) throws Exception {
@@ -59,6 +51,6 @@ public class InverseMatrix extends MatrixProblem{
 
     @Override
     public String getAnswerContent() throws Exception {
-        return String.format("\\( %s invertible = %s \\)", initialMatrix, isInvertible );
+        return String.format("\\( %s invertible = %s \\)", getMatrixValues(matrix.mult(inverse)), isInvertible );
     }
 }

@@ -87,7 +87,7 @@ public class Matrix implements Cloneable{
         return new Matrix(newRows);
     }
 
-    public Matrix mult(Matrix matrix) throws Exception {
+    public Matrix mult(Matrix matrix) {
         matrix.convertRowsToCols();
         ArrayList<Row> newRows = new ArrayList<>();
         for (Row row:rows){
@@ -196,7 +196,18 @@ public class Matrix implements Cloneable{
         }
     }
 
-    public void strongShuffle(Random rand, int left, int right){
+    @Override
+    public String toString(){
+        StringBuilder s= new StringBuilder();
+        for (Row row:rows){
+            s.append(row.toString()).append("\n");
+        }
+        return s.toString();
+    }
+
+    public Matrix strongShuffle(Random rand, int left, int right){
+        var inverseMatrix = new Matrix(this.rows);
+
         int size = height;
         ArrayList<Integer> order = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -205,17 +216,31 @@ public class Matrix implements Cloneable{
         for (int i = 0; i < size; i++) {
             Collections.swap(order, rand.nextInt(size), rand.nextInt(size));
         }
-
         int first = order.get(0);
         for (int i = 0; i < size - 2; i++) {
-            addRow(first, order.get(i+1), ExprUtils.getRandomNonNull(rand,left, right));
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+
+            this.multCurrent(
+                    elementaryOpAdd(first, order.get(i+1),coef,size)
+            );
+
+            inverseMatrix = elementaryOpAdd(first, order.get(i+1),coef.negative(),size).mult(inverseMatrix);
+
         }
+        System.out.println(this.mult(inverseMatrix));
 
         int second = order.get(size-1);
 
         for (int i = 0; i < size - 2; i++) {
-            addRow(second, order.get(i+1), ExprUtils.getRandomNonNull(rand,left, right));
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+
+            this.multCurrent(
+                    elementaryOpAdd(second, order.get(i),coef,size)
+            );
+            inverseMatrix = elementaryOpAdd(second, order.get(i),coef.negative(),size).mult(inverseMatrix);
         }
+
+        System.out.println(this.mult(inverseMatrix));
 
         int nonZero = 0;
         for (int i = 0; i < cols.size(); i++) {
@@ -229,16 +254,55 @@ public class Matrix implements Cloneable{
                 }
             }
         }
+        IExpr tempCoef = ExprUtils.getRandomNonNull(rand,left, right);
+        int tempId = getId(size, nonZero,rand);
+        this.multCurrent(
+                elementaryOpAdd(nonZero,tempId,tempCoef,size)
+        );
 
-        addRow(nonZero,getId(size, nonZero,rand),ExprUtils.getRandomNonNull(rand,left,right));
+        inverseMatrix = elementaryOpAdd(nonZero, tempId, tempCoef.negative(),size).mult(inverseMatrix);
+
+
+        System.out.println(this.mult(inverseMatrix));
 
         for (int i = 0; i < size; i++) {
-            addRow(order.get(i),getId(size,order.get(i),rand),ExprUtils.getRandom(rand,left,right));
+            int id = getId(size, i,rand);
+            IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
+
+            this.multCurrent(
+                    elementaryOpAdd(order.get(i),id, coef,size)
+            );
+            inverseMatrix = elementaryOpAdd(order.get(i), id, coef.negative(),size).mult(inverseMatrix);
+
         }
+        System.out.println(this.mult(inverseMatrix));
+
+        return inverseMatrix;
+    }
+
+
+    private Matrix elementaryOpAdd(int from, int to, IExpr coef, int size){
+        var identity = Matrix.identity(size);
+        identity.addRow(from, to, coef);
+        return identity;
     }
 
     private int getId(int size, int current, Random random){
-        return (current + random.nextInt(size-1))%size;
+        return (current + random.nextInt(size-1)+1)%size;
+    }
+
+    private void multCurrent(Matrix matrix){
+        for (int i = 0; i < rows.size(); i++) {
+            ArrayList<IExpr> row = new ArrayList<>();
+            for (Column col : matrix.cols) {
+                IExpr val = rows.get(i).mult(col);
+                row.add(val);
+            }
+            this.rows.set(i,new Row(row));
+        }
+        for (int i = 0; i < cols.size(); i++) {
+            updateCols(i);
+        }
     }
 
 
