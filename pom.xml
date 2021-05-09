@@ -57,7 +57,13 @@
       <groupId>org.springframework</groupId>  
       <artifactId>spring-context</artifactId>  
       <version>5.3.6</version> 
-    </dependency> 
+    </dependency>
+
+    <dependency>
+      <groupId>org.ejml</groupId>
+      <artifactId>ejml-ddense</artifactId>
+      <version>0.40</version>
+    </dependency>
   </dependencies>  
   <build> 
     <plugins> 

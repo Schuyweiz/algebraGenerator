@@ -2,6 +2,7 @@ package com.schuyweiz.algebragenerator.controllers;
 
 
 import com.schuyweiz.algebragenerator.JordanCanonical;
+import com.schuyweiz.algebragenerator.QRdecomposition;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.FindEigenvalues;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
 
@@ -64,5 +65,20 @@ public class BasicMatrixController {
         model.put("problem", problemContent);
         model.put("answer", answerContent);
         return "jordan";
+    }
+
+    @GetMapping("/qrdecomp")
+    public String qrDecomp(
+            Map<String, Object> model
+    ) throws Exception {
+
+        int seed =  new Random().nextInt(10);
+        System.out.println(seed);
+        QRdecomposition problem = new QRdecomposition(seed);
+        String problemContent = problem.getProblemContent();
+        String answerContent = problem.getAnswerContent();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+        return "qrdecomp";
     }
 }

@@ -16,18 +16,4 @@ import java.nio.file.Paths;
 public class DownloadPbsController {
 
 
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity downloadFileFromLocal(@PathVariable String fileName) {
-        Path path = Paths.get(fileBasePath + fileName);
-        Resource resource = null;
-        try {
-            resource = new UrlResource(path.toUri());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                .body(resource);
-    }
 }
