@@ -2,5 +2,5 @@
 
 <@c.page>
 <div>Hello, user</div>
-<a href="/basicmatrixop">Базовые операции над матрицами</a>
+<a href="/problems?type=qr">Базовые операции над матрицами</a>
 </@c.page>

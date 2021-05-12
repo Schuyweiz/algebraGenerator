@@ -7,8 +7,11 @@ import com.schuyweiz.algebragenerator.QRdecomposition;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.FindEigenvalues;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
 
+import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixProblem;
+import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixProblemFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.awt.*;
 import java.util.Map;
@@ -19,13 +22,29 @@ public class BasicMatrixController {
     private static final Random rand = new Random();
     private String message;
 
+    @GetMapping("/problems")
+    public String problem(
+            Map<String,Object> model, @RequestParam(name="type") String type
+    )throws Exception{
+
+        int seed =  new Random().nextInt(10);
+        MatrixProblem problem = MatrixProblemFactory.typeof(type,seed);
+
+        String problemContent = problem.getProblemContent();
+        String answerContent = problem.getAnswerContent();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+
+        return "/qrdecomp";
+    }
+
     @GetMapping("/basicmatrixop")
     public String basicMatrix(
             Map<String, Object> model
     ) throws Exception {
 
         int seed =  new Random().nextInt(10);
-        MatrixAddSubMul problem = new MatrixAddSubMul(seed,3,3,generateSign());
+        MatrixAddSubMul problem = new MatrixAddSubMul(seed);
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();
         model.put("problem", problemContent);
@@ -47,12 +66,7 @@ public class BasicMatrixController {
         model.put("answer", answerContent);
         return "eigenvalues";
     }
-    private String generateSign(){
-        int value = rand.nextInt(3);
-        return value==0? "+"
-                : value == 1? "-"
-                : "*";
-    }
+
 
     @GetMapping("/jordan")
     public String jordan(

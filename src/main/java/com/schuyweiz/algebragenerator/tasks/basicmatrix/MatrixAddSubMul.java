@@ -7,9 +7,10 @@ public class MatrixAddSubMul extends MatrixProblem{
 
     private final String sign;
 
-    public MatrixAddSubMul(int randomSeed, int rows, int cols, String sign) throws Exception {
+    public MatrixAddSubMul(int randomSeed) throws Exception {
 
         this.rand = new Random(randomSeed);
+        String sign = generateSign();
 
         this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
         this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
@@ -23,6 +24,13 @@ public class MatrixAddSubMul extends MatrixProblem{
 
         this.sign = " " + sign + " ";
 
+    }
+
+    private String generateSign(){
+        int value = rand.nextInt(3);
+        return value==0? "+"
+                : value == 1? "-"
+                : "*";
     }
 
     @Override

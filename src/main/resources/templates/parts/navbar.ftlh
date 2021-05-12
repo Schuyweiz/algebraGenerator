@@ -22,13 +22,14 @@
                         Сгенерировать задачу
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="/basicmatrixop">Сложение/Вычитание/Умножение матриц</a></li>
-                        <li><a class="dropdown-item" href="/matrixrank">Поиск ранга матрицы</a></li>
-                        <li><a class="dropdown-item" href="/powern">Поиск n-ой степени матрицы</a></li>
-                        <li><a class="dropdown-item" href="/matrixinv">Определить обратимость матрицы</a></li>
-                        <li><a class="dropdown-item" href="/eigenvalues">Найти собственные значения</a></li>
-                        <li><a class="dropdown-item" href="/jordan">Привести к форме Жордана</a></li>
-                        <li><a class="dropdown-item" href="/qrdecomp">Найти QR разложение матрицы</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=addsubmult">Сложение/Вычитание/Умножение матриц</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=rank">Поиск ранга матрицы</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=powern">Поиск n-ой степени матрицы</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=inverse">Определить обратимость матрицы</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=eigenvalues">Найти собственные значения</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=jordan">Привести к форме Жордана</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=qr">Найти QR разложение матрицы</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=orthdiag">Найти даигональную матрицу и ортогональное преобразование</a></li>
                     </ul>
                 </li>
             </ul>
