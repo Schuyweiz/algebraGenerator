@@ -2,6 +2,7 @@ package com.schuyweiz.algebragenerator.controllers;
 
 
 import com.schuyweiz.algebragenerator.JordanCanonical;
+import com.schuyweiz.algebragenerator.OrthgonalDiag;
 import com.schuyweiz.algebragenerator.QRdecomposition;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.FindEigenvalues;
 import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixAddSubMul;
@@ -16,6 +17,7 @@ import java.util.Random;
 @Controller
 public class BasicMatrixController {
     private static final Random rand = new Random();
+    private String message;
 
     @GetMapping("/basicmatrixop")
     public String basicMatrix(
@@ -80,5 +82,24 @@ public class BasicMatrixController {
         model.put("problem", problemContent);
         model.put("answer", answerContent);
         return "qrdecomp";
+    }
+
+    @GetMapping("/orthdiag")
+    public String orthDiag(
+            Map<String, Object> model
+    ) throws Exception {
+
+        int seed =  new Random().nextInt(10);
+        System.out.println(seed);
+        OrthgonalDiag problem = new OrthgonalDiag(seed);
+        String problemContent = problem.getProblemContent();
+        String answerText = problem.getAnswerText();
+        String problemText = problem.getProblemText();
+        String answerContent = problem.getAnswerContent();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+        model.put("problemtext", problemText);
+        model.put("answertext", answerText);
+        return "orthdiag";
     }
 }

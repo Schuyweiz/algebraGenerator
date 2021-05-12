@@ -14,6 +14,8 @@ public class FindEigenvalues extends MatrixProblem{
     Matrix matrix;
     Matrix A;
     Matrix invA;
+    private final String problemText = "Найдите все собственные значения матрицы: ";
+    private final String answerText = "Собственные значения матрицы: ";
 
 
     public FindEigenvalues(int seed) throws Exception {
@@ -51,24 +53,26 @@ public class FindEigenvalues extends MatrixProblem{
 
     @Override
     public String getProblemText() {
-        return null;
+        return problemText;
     }
 
     @Override
     public String getAnswerText() {
-        return null;
+        return answerText;
     }
 
     @Override
     public String getProblemContent() {
         return texExpression(
-                String.format("%s  %s  %s \n %s", getMatrixValues(matrix), getMatrixValues(A), getMatrixValues(invA),
-                        getMatrixValues(A.mult(invA)))
+                String.format("%s", getMatrixValues(matrix))
         );
     }
 
     @Override
     public String getAnswerContent() throws Exception {
-        return eigenvalues.stream().map(val->val.toString()).collect(Collectors.joining(" ,")).toString();
+        return eigenvalues
+                .stream()
+                .map(val->val.toString())
+                .collect(Collectors.joining(" ,"));
     }
 }

@@ -2,10 +2,12 @@ package com.schuyweiz.algebragenerator.matrix;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.expression.F;
+import org.matheclipse.core.expression.FractionSym;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
 
@@ -136,7 +138,51 @@ public class Matrix implements Cloneable{
         return matrix;
     }
 
+    public static Matrix orthogonal(Random rand, ArrayList<Integer> order, int n){
+
+        for (int i = 0; i < order.size(); i++) {
+            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
+        }
+
+        int a = order.get(0);
+        int b = order.get(1);
+        int c = order.get(2);
+        int d = order.get(3);
+
+        ArrayList<Row> rows = new ArrayList<Row>();
+        ArrayList<IExpr> row1 = new ArrayList<>();
+        row1.add(FractionSym.valueOf(a*a+b*b-c*c-d*d,n));
+        row1.add(FractionSym.valueOf(2*(-a*d+b*c),n));
+        row1.add(FractionSym.valueOf(2*(a*c+b*d),n));
+
+
+        ArrayList<IExpr> row2 = new ArrayList<>();
+        row2.add(FractionSym.valueOf(2*(a*d+b*c),n));
+        row2.add(FractionSym.valueOf(a*a-b*b+c*c-d*d,n));
+        row2.add(FractionSym.valueOf(2*(-a*b + c*d),n));
+
+        ArrayList<IExpr> row3 = new ArrayList<>();
+        row3.add(FractionSym.valueOf(2*(-a*c+b*d),n));
+        row3.add(FractionSym.valueOf(2*(a*b+c*d),n));
+        row3.add(FractionSym.valueOf(a*a-b*b-c*c+d*d,n));
+
+        rows.add(new Row(row1));
+        rows.add(new Row(row2));
+        rows.add(new Row(row3));
+
+
+        return new Matrix(rows);
+    }
+
     //endregion
+
+    public Matrix transpose(){
+        ArrayList<Row> rows = new ArrayList<>();
+        for (Column col: cols){
+            rows.add(col.toRow());
+        }
+        return new Matrix(rows);
+    }
 
 
     public int getHeight() {

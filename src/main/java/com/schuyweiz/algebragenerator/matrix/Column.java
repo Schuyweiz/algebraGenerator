@@ -91,4 +91,8 @@ public class Column {
         }
         return String.join("&", arr);
     }
+
+    public Row toRow(){
+        return new Row(this.content);
+    }
 }

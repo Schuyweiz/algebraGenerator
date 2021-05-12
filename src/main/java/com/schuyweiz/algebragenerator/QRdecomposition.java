@@ -31,9 +31,6 @@ public class QRdecomposition extends MatrixProblem {
 
         A = Q.mult(R);
 
-
-
-
     }
 
     private Matrix createR(){
@@ -54,49 +51,21 @@ public class QRdecomposition extends MatrixProblem {
 
     private Matrix createQ(){
 
-        int a  ;
-        int b  ;
-        int c ;
-        int d;
+        int a  = rand.nextInt(4)*2;
+        int b  =rand.nextInt(4)*2;
+        int c  =rand.nextInt(4)*2;
+        int d = 0;
+        n = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(
                 List.of(
-                rand.nextInt(4)*2,
-                rand.nextInt(4)*2,
-                rand.nextInt(4)*2-1,0));
+                        a,b,c,d
+                ));
         for (int i = 0; i < order.size(); i++) {
             Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
         }
 
-        a = order.get(0);
-        b = order.get(1);
-        c = order.get(2);
-        d = order.get(3);
-
-        n = a*a + b*b + c*c + d*d;
-        ArrayList<Row> rows = new ArrayList<Row>();
-        ArrayList<IExpr> row1 = new ArrayList<>();
-        row1.add(FractionSym.valueOf(a*a+b*b-c*c-d*d,n));
-        row1.add(FractionSym.valueOf(2*(-a*d+b*c),n));
-        row1.add(FractionSym.valueOf(2*(a*c+b*d),n));
-
-
-        ArrayList<IExpr> row2 = new ArrayList<>();
-        row2.add(FractionSym.valueOf(2*(a*d+b*c),n));
-        row2.add(FractionSym.valueOf(a*a-b*b+c*c-d*d,n));
-        row2.add(FractionSym.valueOf(2*(-a*b + c*d),n));
-
-        ArrayList<IExpr> row3 = new ArrayList<>();
-        row3.add(FractionSym.valueOf(2*(-a*c+b*d),n));
-        row3.add(FractionSym.valueOf(2*(a*b+c*d),n));
-        row3.add(FractionSym.valueOf(a*a-b*b-c*c+d*d,n));
-
-        rows.add(new Row(row1));
-        rows.add(new Row(row2));
-        rows.add(new Row(row3));
-
-
-        return new Matrix(rows);
+        return Matrix.orthogonal(rand, order, n);
 
     }
 
