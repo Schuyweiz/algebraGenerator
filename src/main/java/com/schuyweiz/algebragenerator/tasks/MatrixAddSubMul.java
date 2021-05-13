@@ -35,7 +35,7 @@ public class MatrixAddSubMul extends MatrixProblem{
 
     @Override
     public String getProblemText() {
-        return null;
+        return "вычислить результат выражения: ";
     }
 
     @Override

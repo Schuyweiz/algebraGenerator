@@ -70,7 +70,7 @@ public class QRdecomposition extends MatrixProblem {
 
     @Override
     public String getProblemText() {
-        return null;
+        return "Найти QR разложение для матрицы";
     }
 
     @Override

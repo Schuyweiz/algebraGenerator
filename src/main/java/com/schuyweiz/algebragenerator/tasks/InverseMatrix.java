@@ -20,7 +20,7 @@ public class InverseMatrix extends MatrixProblem{
 
     @Override
     public String getProblemText() {
-        return null;
+        return "Найти обратную матрицу";
     }
 
     @Override

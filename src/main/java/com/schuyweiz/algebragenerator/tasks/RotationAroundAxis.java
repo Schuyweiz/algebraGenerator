@@ -127,7 +127,7 @@ public class RotationAroundAxis extends MatrixProblem{
     @Override
     public String getAnswerText() {
         //TODO: write [roper answer text
-        return null;
+        return "Найти угол поворота и ось вращения: ";
     }
 
     @Override

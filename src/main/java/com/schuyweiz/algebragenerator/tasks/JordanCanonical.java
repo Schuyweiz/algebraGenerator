@@ -69,7 +69,7 @@ public class JordanCanonical extends MatrixProblem {
 
     @Override
     public String getProblemText() {
-        return null;
+        return "Применить алгоритм нахождения жордановой нормальной матрицы: ";
     }
 
     @Override
