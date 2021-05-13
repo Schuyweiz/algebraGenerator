@@ -1,10 +1,9 @@
 package com.schuyweiz.algebragenerator;
 
+import com.schuyweiz.algebragenerator.tasks.QRdecomposition;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class QRdecompositionTest {
 

@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator.tasks.basicmatrix;
+package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import org.matheclipse.core.expression.IntegerSym;
@@ -16,20 +16,6 @@ public class InverseMatrix extends MatrixProblem{
         this.matrix = Matrix.identity(3);
 
         inverse = matrix.strongShuffle(rand,-3,3);
-    }
-
-    private void transform(Matrix matrix) throws Exception {
-        int size = matrix.getHeight();
-        int term1 = rand.nextInt(size);
-        int term2 = (term1+1)%size;
-        int term3 = (term2+1)%size;
-
-        int coef2 = rand.nextInt(3)+1;
-        int coef3 = rand.nextInt(3)+1;
-
-        matrix.multRow(term1,IntegerSym.valueOf(0));
-        matrix.addRow(term2,term1,IntegerSym.valueOf(coef2));
-        matrix.addRow(term2, term3, IntegerSym.valueOf(coef3));
     }
 
     @Override

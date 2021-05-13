@@ -1,7 +1,7 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixProblem;
+import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 
 import java.util.ArrayList;
@@ -26,6 +26,7 @@ public class OrthgonalDiag extends MatrixProblem {
         this.invT = T.transpose();
         this.D = createD();
         this.A = createA();
+
     }
 
     private Matrix createT(){

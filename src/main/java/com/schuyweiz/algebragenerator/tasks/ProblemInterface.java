@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator.tasks.basicmatrix;
+package com.schuyweiz.algebragenerator.tasks;
 
 public interface ProblemInterface {
 

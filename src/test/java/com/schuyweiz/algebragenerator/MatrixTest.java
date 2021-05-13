@@ -3,10 +3,14 @@ package com.schuyweiz.algebragenerator;
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.matrix.Row;
 import org.junit.jupiter.api.Test;
+import org.matheclipse.core.eval.ExprEvaluator;
+import org.matheclipse.core.expression.F;
+import org.matheclipse.core.expression.FractionSym;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 class MatrixTest {
@@ -66,5 +70,56 @@ class MatrixTest {
 
 
     }
+
+    @Test
+    void rotationMatrixFormula(){
+        var matr = initA();
+        System.out.println(matr.toString());
+    }
+
+    private Matrix initA(){
+        var arg = F.Dummy("theta");
+        var x = F.Dummy("x");
+        var y = F.Dummy("y");
+        var z = F.Dummy("z");
+        ExprEvaluator util = new ExprEvaluator(false, (short) 100);
+        var cos = util.eval(F.Cos(F.Pi.$times(arg)));
+        var sin = util.eval(F.Sin(F.Pi.$times(arg)));
+
+        ArrayList<IExpr> row1 = new ArrayList<>(
+                List.of(
+                        cos.plus(IntegerSym.valueOf(1).minus(cos).times(x.times(x))),
+                        x.times(y).times(IntegerSym.valueOf(1).minus(cos)).minus(sin.times(z)),
+                        x.times(z).times(IntegerSym.valueOf(1).minus(cos)).plus(sin.times(y))
+                )
+        );
+
+        ArrayList<IExpr> row2 = new ArrayList<>(
+                List.of(
+                        x.times(y).times(IntegerSym.valueOf(1).minus(cos)).plus(sin.times(z)),
+                        cos.plus(IntegerSym.valueOf(1).minus(cos).times(y.times(y))),
+                        y.times(z).times(IntegerSym.valueOf(1).minus(cos)).minus(sin.times(x))
+                )
+        );
+
+        ArrayList<IExpr> row3 = new ArrayList<>(
+                List.of(
+                        x.times(z).times(IntegerSym.valueOf(1).minus(cos)).minus(sin.times(y)),
+                        y.times(z).times(IntegerSym.valueOf(1).minus(cos)).plus(sin.times(x)),
+                        cos.plus(IntegerSym.valueOf(1).minus(cos).times(z.times(z)))
+                )
+        );
+
+
+        return new Matrix(new ArrayList<Row>(
+                List.of(
+                        new Row(row1),
+                        new Row(row2),
+                        new Row(row3)
+                )
+        ));
+
+    }
+
 
 }

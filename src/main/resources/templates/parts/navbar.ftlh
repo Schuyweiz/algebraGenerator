@@ -30,6 +30,9 @@
                         <li><a class="dropdown-item" href="/problems?type=jordan">Привести к форме Жордана</a></li>
                         <li><a class="dropdown-item" href="/problems?type=qr">Найти QR разложение матрицы</a></li>
                         <li><a class="dropdown-item" href="/problems?type=orthdiag">Найти даигональную матрицу и ортогональное преобразование</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=svd">Провести сингулярное разложение над матрицей</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=rot">Найти угол и ось вращения ортогонального оператора</a></li>
+
                     </ul>
                 </li>
             </ul>

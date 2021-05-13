@@ -138,6 +138,14 @@ public class Matrix implements Cloneable{
         return matrix;
     }
 
+    public static Matrix randDiag(int width, Random rand){
+        ArrayList<IExpr> diagonal = new ArrayList<>();
+        for (int i = 0; i < width; i++) {
+            diagonal.add(ExprUtils.getPositiveRandom(rand,-3,3));
+        }
+        return Matrix.diag(width,diagonal);
+    }
+
     public static Matrix orthogonal(Random rand, ArrayList<Integer> order, int n){
 
         for (int i = 0; i < order.size(); i++) {
@@ -170,6 +178,25 @@ public class Matrix implements Cloneable{
         rows.add(new Row(row2));
         rows.add(new Row(row3));
 
+
+        return new Matrix(rows);
+    }
+
+    public static Matrix ofRank(int width,int height, int rank, Random rand){
+        ArrayList<Row> rows = new ArrayList<>();
+        int indent = 0;
+
+        for (int i = 0; i < height; i++) {
+            ArrayList<IExpr> exprs = new ArrayList<>();
+            for (int j = 0; j < width; j++) {
+                if (j>=indent && i<rank)
+                    exprs.add(ExprUtils.getRandomNonNull(rand,1,5));
+                else
+                    exprs.add(IntegerSym.valueOf(0));
+            }
+            rows.add(new Row(exprs));
+            indent += (rand.nextInt(2)+1);
+        }
 
         return new Matrix(rows);
     }

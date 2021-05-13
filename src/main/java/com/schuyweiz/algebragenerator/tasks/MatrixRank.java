@@ -1,17 +1,9 @@
-package com.schuyweiz.algebragenerator.tasks.basicmatrix;
+package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.matrix.Row;
-import com.schuyweiz.algebragenerator.utility.ExprUtils;
-import org.matheclipse.core.expression.IntegerSym;
-import org.matheclipse.core.interfaces.IExpr;
-
-import java.util.ArrayList;
 import java.util.Random;
 
 public class MatrixRank extends MatrixProblem {
-
-
 
     public MatrixRank(int seed) throws Exception {
         this.rand = new Random(seed);
@@ -19,30 +11,10 @@ public class MatrixRank extends MatrixProblem {
         int height = rand.nextInt(3)+2;
         rank = rand.nextInt(height-1)+2;
 
-        createRankMatrix(width, height);
+        this.matrix = Matrix.ofRank(width,height,rank,rand);
         initialMatrix = getMatrixValues(matrix);
         matrix.simpleShuffle(rand,-2,4);
     }
-
-    private void createRankMatrix(int width, int height){
-        ArrayList<Row> rows = new ArrayList<>();
-        int indent = 0;
-
-        for (int i = 0; i < height; i++) {
-            ArrayList<IExpr> exprs = new ArrayList<>();
-            for (int j = 0; j < width; j++) {
-                if (j>=indent && i<rank)
-                    exprs.add(ExprUtils.getRandomNonNull(rand,1,5));
-                else
-                    exprs.add(IntegerSym.valueOf(0));
-            }
-            rows.add(new Row(exprs));
-            indent += (rand.nextInt(2)+1);
-        }
-
-        this.matrix = new Matrix(rows);
-    }
-
 
     @Override
     public String getProblemText() {

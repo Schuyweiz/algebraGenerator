@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator.tasks.basicmatrix;
+package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;

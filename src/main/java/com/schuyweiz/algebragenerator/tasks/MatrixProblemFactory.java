@@ -1,8 +1,4 @@
-package com.schuyweiz.algebragenerator.tasks.basicmatrix;
-
-import com.schuyweiz.algebragenerator.JordanCanonical;
-import com.schuyweiz.algebragenerator.OrthgonalDiag;
-import com.schuyweiz.algebragenerator.QRdecomposition;
+package com.schuyweiz.algebragenerator.tasks;
 
 public class MatrixProblemFactory {
 
@@ -25,6 +21,10 @@ public class MatrixProblemFactory {
                 return new MatrixRank(seed);
             case "jordan":
                 return new JordanCanonical(seed);
+            case  "svd":
+                return new SVDdecomposition(seed);
+            case "rot":
+                return new RotationAroundAxis(seed);
         }
         return null;
     }

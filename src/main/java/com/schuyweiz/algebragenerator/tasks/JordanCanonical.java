@@ -1,8 +1,8 @@
-package com.schuyweiz.algebragenerator;
+package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.matrix.Row;
-import com.schuyweiz.algebragenerator.tasks.basicmatrix.MatrixProblem;
+import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
