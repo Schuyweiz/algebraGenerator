@@ -25,6 +25,8 @@ public class MatrixProblemFactory {
                 return new SVDdecomposition(seed);
             case "rot":
                 return new RotationAroundAxis(seed);
+            case  "dimker":
+                return new DimKer(seed);
         }
         return null;
     }

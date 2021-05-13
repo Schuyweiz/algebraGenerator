@@ -32,6 +32,7 @@
                         <li><a class="dropdown-item" href="/problems?type=orthdiag">Найти даигональную матрицу и ортогональное преобразование</a></li>
                         <li><a class="dropdown-item" href="/problems?type=svd">Провести сингулярное разложение над матрицей</a></li>
                         <li><a class="dropdown-item" href="/problems?type=rot">Найти угол и ось вращения ортогонального оператора</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=dimker">Найти размерность ядра и отображения матрицы перехода</a></li>
 
                     </ul>
                 </li>

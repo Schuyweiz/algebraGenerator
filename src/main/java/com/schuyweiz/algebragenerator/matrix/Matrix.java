@@ -185,6 +185,7 @@ public class Matrix implements Cloneable{
     public static Matrix ofRank(int width,int height, int rank, Random rand){
         ArrayList<Row> rows = new ArrayList<>();
         int indent = 0;
+        int remains = rank;
 
         for (int i = 0; i < height; i++) {
             ArrayList<IExpr> exprs = new ArrayList<>();
@@ -194,8 +195,9 @@ public class Matrix implements Cloneable{
                 else
                     exprs.add(IntegerSym.valueOf(0));
             }
+            remains--;
             rows.add(new Row(exprs));
-            indent += (rand.nextInt(2)+1);
+            indent += (rand.nextInt(height-indent-remains)+1);
         }
 
         return new Matrix(rows);

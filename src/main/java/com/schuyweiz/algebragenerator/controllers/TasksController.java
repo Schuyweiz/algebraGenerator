@@ -24,8 +24,10 @@ public class TasksController {
 
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();
+        String problemText = problem.getProblemText();
         model.put("problem", problemContent);
         model.put("answer", answerContent);
+        model.put("problemtext", problemText);
 
         return "/problems";
     }
