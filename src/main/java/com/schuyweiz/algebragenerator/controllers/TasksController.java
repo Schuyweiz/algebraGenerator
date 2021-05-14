@@ -13,12 +13,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Controller
 public class TasksController {
@@ -57,20 +63,31 @@ public class TasksController {
     @PostMapping("/problems/add")
     public String add()
     {
-        document.addTask(currentProblem.getProblemText(),currentProblem.getProblemContent());
+        document.addTask(currentProblem);
         return "redirect:/problems";
     }
 
     @GetMapping(value = "/download",
             produces = MediaType.APPLICATION_PDF_VALUE)
     public @ResponseBody
-    ResponseEntity<byte[]> demo() throws IOException, InterruptedException {
-        document.createTex("./src/main/resources/files/");
+    ResponseEntity<byte[]> demo()
+            throws IOException, InterruptedException {
+        
+        
+        String pathTasks = "src/main/resources/files/tasks.tex";
+        String pathAnswers = "src/main/resources/files/answers.tex";
+        document.createTasksTex("./src/main/resources/files/");
         ProcessBuilder pb = new ProcessBuilder(
                 "/usr/bin/pdflatex",
                 "-output-directory=src/main/resources/files",
                 "-interaction=nonstopmode",
-                "src/main/resources/files/tasks.tex"
+                pathTasks
+        );
+        ProcessBuilder pb2 = new ProcessBuilder(
+                "/usr/bin/pdflatex",
+                "-output-directory=src/main/resources/files",
+                "-interaction=nonstopmode",
+                pathAnswers
         );
 
         pb.redirectErrorStream(true);
@@ -85,12 +102,47 @@ public class TasksController {
         int exitWith = p.waitFor();
         System.out.println("\nExited with " + exitWith);
 
+        Process p2  = pb2.start();
+        p2.waitFor();
 
-        var content = Files.readAllBytes(Path.of("src/main/resources/files/tasks.pdf"));
+
+        String zipPath = "src/main/resources/files/algebrator.zip";
+        createZip(
+                zipPath,
+                new ArrayList<>(List.of(
+                        pathTasks,
+                    pathAnswers,
+                    "src/main/resources/files/tasks.pdf",
+                    "src/main/resources/files/answers.pdf")),
+                new ArrayList<>(
+                        List.of(
+                                "/tasks.tex",
+                                "/answers.tex",
+                                "/tasks.pdf",
+                                "/answers.pdf"
+                        )
+                )
+        );
+
+        var content = Files.readAllBytes(Path.of(zipPath));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE); // (3) Content-Type: application/octet-stream
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("tasks.pdf").build().toString()); // (4) Content-Disposition: attachment; filename="demo-file.txt"
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("algebrator.zip").build().toString()); // (4) Content-Disposition: attachment; filename="demo-file.txt"
         return ResponseEntity.ok().headers(httpHeaders).body(content);
+    }
+    
+    private void createZip(String zipPath, ArrayList<String> contentPaths, ArrayList<String> zipPaths) throws IOException {
+        FileOutputStream fout = new FileOutputStream(zipPath);
+        ZipOutputStream zout = new ZipOutputStream(fout);
+        for(int i=0;i<contentPaths.size();i++)
+        {
+            ZipEntry ze = new ZipEntry(zipPaths.get(i));
+            zout.putNextEntry(ze);
+            var content = Files.readAllBytes(Path.of(contentPaths.get(i)));
+            zout.write(content);
+            zout.closeEntry();
+        }
+        zout.close();
     }
 
 }

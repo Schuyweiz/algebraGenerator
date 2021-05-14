@@ -79,7 +79,7 @@ public class OrthgonalDiag extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         return texExpression(
                 String.format(
                         "%s \\times %s \\times %s  = %s",

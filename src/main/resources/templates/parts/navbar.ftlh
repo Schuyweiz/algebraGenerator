@@ -9,7 +9,7 @@
         <div class="dropdown" id="dropdownMenu">
             <ul class="navbar-nav me-auto mb-3 mb-lg-2">
                 <li class="nav-item">
-                    <a class="nav-link active nav-link-dark" aria-current="page" href="/download">Создать файл с задачами</a>
+                    <a class="nav-link active nav-link-dark" aria-current="page" href="/download">Импортировать задачи и ответы</a>
                 </li>
                 <li class="nav-item dropdown"
                     aria-current="page">

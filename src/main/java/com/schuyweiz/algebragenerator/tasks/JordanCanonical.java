@@ -84,7 +84,7 @@ public class JordanCanonical extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         return this.texExpression(
                 String.format("%s", getMatrixValues(jordan))
         );

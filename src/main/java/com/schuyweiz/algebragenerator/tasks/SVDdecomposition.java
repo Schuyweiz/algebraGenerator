@@ -82,7 +82,7 @@ public class SVDdecomposition extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent()  {
         return texExpression(
                 String.format(
                         "%s = %s \\times %s \\times %s",

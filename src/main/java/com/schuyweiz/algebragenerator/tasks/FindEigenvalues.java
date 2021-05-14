@@ -69,7 +69,7 @@ public class FindEigenvalues extends MatrixProblem{
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         return eigenvalues
                 .stream()
                 .map(val->val.toString())

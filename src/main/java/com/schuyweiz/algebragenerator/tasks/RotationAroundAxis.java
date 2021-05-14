@@ -140,7 +140,7 @@ public class RotationAroundAxis extends MatrixProblem{
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent()  {
         return String.format(
                 "Угол поворота θ = %s\n" +
                         "Ось вращения v = %s",

@@ -85,7 +85,7 @@ public class QRdecomposition extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent()  {
         return this.texExpression(
                 String.format("Q = %s R = %s", getMatrixValues(Q), getMatrixValues(R))
         );

@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class InverseMatrix extends MatrixProblem{
 
-    private Matrix matrix;
-    private Matrix inverse;
+    private final Matrix matrix;
+    private final Matrix inverse;
     private boolean isInvertible =true;
 
     public InverseMatrix(int seed) throws Exception {
@@ -36,7 +36,7 @@ public class InverseMatrix extends MatrixProblem{
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         String reverseString = getMatrixValues(this.inverse);
 
         return texExpression(reverseString);

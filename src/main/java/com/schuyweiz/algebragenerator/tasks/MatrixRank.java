@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class MatrixRank extends MatrixProblem {
 
-    public MatrixRank(int seed) throws Exception {
+    public MatrixRank(int seed)  {
         this.rand = new Random(seed);
         int width  = rand.nextInt(4)+2;
         int height = rand.nextInt(3)+2;
@@ -33,7 +33,7 @@ public class MatrixRank extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         return String.format("\\( %s rank = %s \\)", initialMatrix, rank);
     }
 

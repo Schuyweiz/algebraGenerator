@@ -87,7 +87,7 @@ public class MatrixPowerN extends MatrixProblem {
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent()  {
         Matrix m = this.P.mult(this.Qn).mult(this.invP);
         String pInvString = getMatrixValues(m);
 

@@ -54,7 +54,7 @@ public class DimKer extends MatrixProblem{
     }
 
     @Override
-    public String getAnswerContent() throws Exception {
+    public String getAnswerContent() {
         return String.format(
                 "%s\n" +
                         "rank = %s",
