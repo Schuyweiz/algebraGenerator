@@ -103,7 +103,8 @@ public class Row implements Cloneable {
             wr.getBuffer().setLength(0);
             wr.getBuffer().trimToSize();
         }
-        return String.join("&", arr);
+        var temp =  String.join("&", arr);
+        return temp+"\\\\";
     }
 
     private ArrayList<IExpr> content;

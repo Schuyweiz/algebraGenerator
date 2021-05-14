@@ -31,13 +31,14 @@ public class InverseMatrix extends MatrixProblem{
     @Override
     public String getProblemContent() {
         String matrixString = getMatrixValues(matrix);
-        String reverseString = getMatrixValues(this.inverse);
 
-        return String.format("\\(%s %s\\)",matrixString, reverseString);
+        return texExpression(matrixString);
     }
 
     @Override
     public String getAnswerContent() throws Exception {
-        return String.format("\\( %s invertible = %s \\)", getMatrixValues(matrix.mult(inverse)), isInvertible );
+        String reverseString = getMatrixValues(this.inverse);
+
+        return texExpression(reverseString);
     }
 }

@@ -1,7 +1,6 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 
 import java.util.ArrayList;

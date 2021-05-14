@@ -4,10 +4,13 @@ package com.schuyweiz.algebragenerator.tasks;
 import com.schuyweiz.algebragenerator.ElementaryCommand;
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import org.matheclipse.core.expression.IntegerSym;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+
+@Component
 public abstract class MatrixProblem implements ProblemInterface {
 
         protected Matrix firstTerm;
@@ -17,6 +20,7 @@ public abstract class MatrixProblem implements ProblemInterface {
         protected String answerText;
         protected Random rand;
         protected ArrayList<ElementaryCommand> commands;
+
 
         protected Matrix shuffleMatrix(int times, Matrix matrix) throws Exception {
                 for (int i = 0; i < times; i++) {
@@ -113,8 +117,11 @@ public abstract class MatrixProblem implements ProblemInterface {
         }
 
         protected String texExpression(String expr){
-                return String.format("\\( %s \\)", expr);
+                return String.format(
+                        "$$ %s $$", expr
+                );
         }
+
 
 
 }
