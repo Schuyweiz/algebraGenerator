@@ -38,8 +38,9 @@ public class QRdecomposition extends MatrixProblem {
             for (int j = 0; j < i; j++) {
                 row.add(IntegerSym.valueOf(0));
             }
-            for (int j = i; j < rows.get(i).getSize(); j++) {
-                row.add(ExprUtils.getRandom(rand,-3,3).multiply(IntegerSym.valueOf(n)));
+            row.add(ExprUtils.getPositiveRandom(rand,1,4));
+            for (int j = i+1; j < rows.get(i).getSize(); j++) {
+                row.add(ExprUtils.getRandomNonNull(rand,-3,3).multiply(IntegerSym.valueOf(n)));
             }
             rowsR.add(new Row(row));
         }
