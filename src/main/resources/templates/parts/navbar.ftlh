@@ -1,27 +1,19 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg bg-light">
     <div class="container-fluid">
         <a class="navbar-brand me-auto mb-3 mb-lg-2" href="#">Алгебратор</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="dropdown" id="dropdownMenu">
             <ul class="navbar-nav me-auto mb-3 mb-lg-2">
-                <li class="nav-item">
-                    <a class="nav-link active nav-link-dark" aria-current="page" href="/download">
-                        Импортировать задачи и ответы
-                        <#if items??>
-                            <span class="badge badge-light">${items}</span>
-                        <#else>
 
-                        </#if>
-
-                    </a>
-                </li>
+                <#if size?? && size gt 0>
+                    <li class="nav-item">
+                        <a class="nav-link active nav-link-dark" aria-current="page" href="/reset">
+                            Сбросить текущий выбор
+                        </a>
+                    </li>
+                </#if>
                 <li class="nav-item dropdown"
                     aria-current="page">
-                    <a class="nav-link dropdown-toggle active"
+                    <a class="nav-link dropdown-toggle  active"
                        href="#"
                        id="navbarDarkDropdownMenuLink"
                        role="button"
@@ -44,7 +36,69 @@
 
                     </ul>
                 </li>
+                <li class="nav-item">
+                    <#if size??>
+                        <#if size gt 0>
+
+                            <a class="nav-link active nav-link-dark " aria-current="page" href="/download" onclick="refreshPage()">
+                                Импортировать задачи и ответы
+                                <#if items??>
+                                    <span class="badge badge-light">${items}</span>
+                                <#else>
+
+                                </#if>
+
+                            </a>
+
+                        <#else>
+
+                            <a class="nav-link disabled nav-link-dark" aria-current="page" href="/download">
+                                Импортировать задачи и ответы
+                                <#if items??>
+                                    <span class="badge badge-light">${items}</span>
+                                <#else>
+
+                                </#if>
+
+                            </a>
+
+                        </#if>
+
+                    <#else >
+                        <a class="nav-link disabled nav-link-dark" aria-current="page" href="/download">
+                            Импортировать задачи и ответы
+                            <#if items??>
+                                <span class="badge badge-light">${items}</span>
+                            <#else>
+                                <span class="badge badge-light">0</span>
+                            </#if>
+
+                        </a>
+
+                    </#if>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+    function  func() {
+        console.log("Ya ttut");
+
+        $.ajax({
+            url: "/reset",
+            method: 'POST',
+            success: function() {
+                console.log("я получил и жив");
+            }
+        });
+    }
+</script>
+
+<script>
+    async function refreshPage(){
+        await new Promise(r => setTimeout(r, 1000));
+        window.location.reload();
+    }
+</script>

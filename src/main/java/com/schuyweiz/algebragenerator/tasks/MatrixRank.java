@@ -7,13 +7,13 @@ public class MatrixRank extends MatrixProblem {
 
     public MatrixRank(int seed)  {
         this.rand = new Random(seed);
-        int width  = rand.nextInt(4)+2;
-        int height = rand.nextInt(3)+2;
-        rank = rand.nextInt(height-1)+2;
+        int width  = rand.nextInt(4)+3;
+        int height = rand.nextInt(2)+3;
+        rank = rand.nextInt(height-1)+1;
 
         this.matrix = Matrix.ofRank(width,height,rank,rand);
         initialMatrix = getMatrixValues(matrix);
-        matrix.simpleShuffle(rand,-2,4);
+        matrix.simpleShuffle(rand,-2,2);
     }
 
     @Override

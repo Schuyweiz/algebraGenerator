@@ -2,6 +2,7 @@ package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
+import org.matheclipse.core.expression.IntegerSym;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +19,7 @@ public class OrthgonalDiag extends MatrixProblem {
     private Matrix invT;
     private Matrix D;
     private Matrix A;
+    private int n;
 
     public OrthgonalDiag(int seed){
         this.rand = new Random(seed);
@@ -33,7 +35,7 @@ public class OrthgonalDiag extends MatrixProblem {
         int b  =rand.nextInt(2)*2;
         int c  =rand.nextInt(2)*2;
         int d = rand.nextInt(2)*2;
-        int n = a*a+ b*b + c*c + d*d;
+        n = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(
                 List.of(
@@ -48,9 +50,9 @@ public class OrthgonalDiag extends MatrixProblem {
 
     private Matrix createD(){
         var diag = new ArrayList<>(List.of(
-                ExprUtils.getRandom(rand, -5,5),
-                ExprUtils.getRandom(rand,-5,5),
-                ExprUtils.getRandom(rand,-5,5)
+                ExprUtils.getRandom(rand, -5,5).times(IntegerSym.valueOf(n*n)),
+                ExprUtils.getRandom(rand,-5,5).times(IntegerSym.valueOf(n*n)),
+                ExprUtils.getRandom(rand,-5,5).times(IntegerSym.valueOf(n*n))
         ));
         return Matrix.diag(3,diag);
     }

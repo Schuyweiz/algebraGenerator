@@ -4,16 +4,13 @@ import com.schuyweiz.algebragenerator.TasksDocument;
 import com.schuyweiz.algebragenerator.tasks.MatrixAddSubMul;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblemFactory;
-import org.apache.tomcat.jni.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,7 +26,7 @@ import java.util.zip.ZipOutputStream;
 public class TasksController {
 
     @Autowired
-    private final TasksDocument document = new TasksDocument();
+    private TasksDocument document = new TasksDocument();
 
     private MatrixProblem currentProblem = new MatrixAddSubMul((int) System.currentTimeMillis());
 
@@ -37,7 +34,15 @@ public class TasksController {
     public String greeting(
             Map<String, Object> model
     ){
-        return "/greeting";
+        String problemContent = currentProblem.getProblemContent();
+        String answerContent = currentProblem.getAnswerContent();
+        String problemText = currentProblem.getProblemText();
+        model.put("problem", problemContent);
+        model.put("answer", answerContent);
+        model.put("problemtext", problemText);
+        model.put("items", document.getSize());
+        model.put("size",document.getSize());
+        return "/problems";
     }
 
     @GetMapping("/problems")
@@ -63,6 +68,7 @@ public class TasksController {
         model.put("answer", answerContent);
         model.put("problemtext", problemText);
         model.put("items", document.getSize());
+        model.put("size",document.getSize());
         currentProblem = problem;
 
         return "/problems";
@@ -76,8 +82,7 @@ public class TasksController {
         return "redirect:/problems";
     }
 
-    @GetMapping(value = "/download",
-            produces = MediaType.APPLICATION_PDF_VALUE)
+    @GetMapping(value = "/download")
     public @ResponseBody
     ResponseEntity<byte[]> demo()
             throws IOException, InterruptedException {
@@ -147,6 +152,9 @@ public class TasksController {
         for(File file: Objects.requireNonNull(dir.listFiles()))
             if (!file.isDirectory())
                 file.delete();
+
+        this.document = new TasksDocument();
+
         return ResponseEntity.ok().headers(httpHeaders).body(content);
     }
     
@@ -175,8 +183,15 @@ public class TasksController {
         return sb.toString();
     }
 
+    @PostMapping (value = "/reset")
+    public String endSession(){
+        this.document = new TasksDocument();
+        return "redirect:/";
+    }
+
     @GetMapping(value = "/reset")
     public String reset(){
+        this.document = new TasksDocument();
         return "redirect:/";
     }
 }

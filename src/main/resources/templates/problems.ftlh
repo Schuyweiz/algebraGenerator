@@ -1,5 +1,6 @@
 <#import "parts/common.ftlh" as c>
 <@c.mjpage>
+    <#if problemtext??>
     <div class="container">
         <div class="row" align="center">
             <p>${problemtext}</p>
@@ -14,5 +15,6 @@
     <form action="/problems/add" method="post">
         <input type="submit" value="Submit" />
     </form>
+    </#if>
 
 </@c.mjpage>

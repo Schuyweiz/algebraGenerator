@@ -42,14 +42,22 @@
         <#nested>
     </div>
     <script>
-        window.onbeforeunload = function() {
-            $.ajax(
+        window.onunload = function() {
+            console.log("Ya ttut");
+
+            $.ajax({
                 url: "/reset",
-                method: 'reset',
+                method: 'POST',
                 success: function() {
-            })
-        };
+                    console.log("я получил и жив");
+                }
+            });
+        }
     </script>
+    <script>
+        window.
+    </script>
+
     </body>
     </html>
 </#macro>
