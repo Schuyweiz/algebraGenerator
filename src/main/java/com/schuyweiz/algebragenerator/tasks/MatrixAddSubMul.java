@@ -7,7 +7,7 @@ public class MatrixAddSubMul extends MatrixProblem{
 
     private final String sign;
 
-    public MatrixAddSubMul(int randomSeed) throws Exception {
+    public MatrixAddSubMul(int randomSeed) {
 
         this.rand = new Random(randomSeed);
         String sign = generateSign();
@@ -19,7 +19,7 @@ public class MatrixAddSubMul extends MatrixProblem{
             this.answer = firstTerm.add(secondTerm);
         if (sign.equals("-"))
             this.answer = firstTerm.sub(secondTerm);
-        if (sign.equals("*"))
+        if (sign.equals("\\times"))
             this.answer = firstTerm.mult(secondTerm);
 
         this.sign = " " + sign + " ";
@@ -30,7 +30,7 @@ public class MatrixAddSubMul extends MatrixProblem{
         int value = rand.nextInt(3);
         return value==0? "+"
                 : value == 1? "-"
-                : "*";
+                : "\\times";
     }
 
     @Override

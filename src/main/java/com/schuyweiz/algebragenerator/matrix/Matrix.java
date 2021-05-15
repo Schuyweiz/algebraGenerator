@@ -73,7 +73,7 @@ public class Matrix implements Cloneable{
     //endregion
 
     //region matrix basic operations
-    public Matrix sub(Matrix another) throws Exception {
+    public Matrix sub(Matrix another)  {
         ArrayList<Row> newRows = new ArrayList<>();
         for (int i = 0; i < this.rows.size(); i++) {
             newRows.add(getRows().get(i).sub(another.rows.get(i)));
@@ -81,7 +81,7 @@ public class Matrix implements Cloneable{
         return new Matrix(newRows);
     }
 
-    public Matrix add(Matrix another) throws Exception {
+    public Matrix add(Matrix another)  {
         ArrayList<Row> newRows = new ArrayList<>();
         for (int i = 0; i < this.rows.size(); i++) {
             newRows.add(getRows().get(i).add(another.rows.get(i)));
@@ -282,7 +282,7 @@ public class Matrix implements Cloneable{
         return s.toString();
     }
 
-    public Matrix strongShuffle(Random rand, int left, int right){
+    public Matrix strongShuffle(Random rand, int left, int right, int cycles){
         var inverseMatrix = new Matrix(this.rows);
 
         ArrayList<Integer> order = new ArrayList<>();
@@ -334,14 +334,14 @@ public class Matrix implements Cloneable{
 
         inverseMatrix = elementaryOpAdd(nonZero, tempId, tempCoef.negative(),width).mult(inverseMatrix);
 
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < height*cycles; i++) {
             int id = getId(height, i,rand);
             IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
 
             this.multCurrent(
-                    elementaryOpAdd(i,id, coef,width)
+                    elementaryOpAdd(i%height,id, coef,width)
             );
-            inverseMatrix = elementaryOpAdd(i, id, coef.negative(),width).mult(inverseMatrix);
+            inverseMatrix = elementaryOpAdd(i%height, id, coef.negative(),width).mult(inverseMatrix);
 
         }
         return inverseMatrix;

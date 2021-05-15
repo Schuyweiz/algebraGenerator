@@ -24,7 +24,7 @@ public class FindEigenvalues extends MatrixProblem{
         this.matrix = Matrix.diag(3,eigenvalues);
         for (int i = 0; i < 1; i++) {
             A = Matrix.identity(3);
-            invA = A.strongShuffle(rand,-3,3);
+            invA = A.strongShuffle(rand,-3,3,1);
             matrix = invA.mult(matrix).mult(A);
         }
     }

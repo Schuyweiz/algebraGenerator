@@ -63,7 +63,7 @@ class MatrixTest {
     @Test
     void testShuffle() throws Exception {
         Matrix m = Matrix.identity(3);
-        var var = m.strongShuffle(new Random(2),-3,3);
+        var var = m.strongShuffle(new Random(2),-3,3,1);
         System.out.println(var.mult(m));
         System.out.println(var);
         System.out.println(m);

@@ -9,7 +9,15 @@
         <div class="dropdown" id="dropdownMenu">
             <ul class="navbar-nav me-auto mb-3 mb-lg-2">
                 <li class="nav-item">
-                    <a class="nav-link active nav-link-dark" aria-current="page" href="/download">Импортировать задачи и ответы</a>
+                    <a class="nav-link active nav-link-dark" aria-current="page" href="/download">
+                        Импортировать задачи и ответы
+                        <#if items??>
+                            <span class="badge badge-light">${items}</span>
+                        <#else>
+
+                        </#if>
+
+                    </a>
                 </li>
                 <li class="nav-item dropdown"
                     aria-current="page">

@@ -40,20 +40,24 @@ public class TasksDocument {
 
     }
 
-    public void createTasksTex(String path) throws IOException {
+    public void createTasksTex(String qpath, String apath) throws IOException {
 
         String contentTasks = createTex(documentTasks());
 
-        FileWriter fw = new FileWriter( path + "tasks.tex");
+        FileWriter fw = new FileWriter( qpath);
         fw.write(contentTasks);
         fw.close();
 
         String contentAnswer = createTex(documentSolutions());
 
 
-        FileWriter fw2 = new FileWriter( path + "answers.tex");
+        FileWriter fw2 = new FileWriter( apath );
         fw2.write(contentAnswer);
         fw2.close();
+    }
+
+    public int getSize(){
+        return this.answers.size();
     }
 
     private String documentTasks(){

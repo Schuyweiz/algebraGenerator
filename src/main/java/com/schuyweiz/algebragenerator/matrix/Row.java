@@ -63,11 +63,11 @@ public class Row implements Cloneable {
         return new Row(row);
     }
 
-    public Row add(Row anotherRow) throws Exception {
+    public Row add(Row anotherRow){
         return this.add(anotherRow,IntegerSym.valueOf(1));
     }
 
-    public Row sub(Row anotherRow) throws Exception {
+    public Row sub(Row anotherRow)  {
         ArrayList<IExpr> row = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             //this.content.set(i,this.content.get(i)*times);

@@ -29,10 +29,10 @@ public class OrthgonalDiag extends MatrixProblem {
     }
 
     private Matrix createT(){
-        int a  = rand.nextInt(4)*2;
-        int b  =rand.nextInt(4)*2;
-        int c  =rand.nextInt(4)*2;
-        int d = 0;
+        int a  = rand.nextInt(2)*2+1;
+        int b  =rand.nextInt(2)*2;
+        int c  =rand.nextInt(2)*2;
+        int d = rand.nextInt(2)*2;
         int n = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(

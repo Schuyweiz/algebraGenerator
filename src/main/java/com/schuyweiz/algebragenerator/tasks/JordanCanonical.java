@@ -20,7 +20,7 @@ public class JordanCanonical extends MatrixProblem {
         size = 4;
         jordan = generateJordan();
         Matrix A = Matrix.identity(size);
-        Matrix invA = A.strongShuffle(rand, -3, 3);
+        Matrix invA = A.strongShuffle(rand, -2, 2,1);
         problemMatrix = A.mult(jordan).mult(invA);
     }
 

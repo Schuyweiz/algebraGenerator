@@ -38,9 +38,9 @@ public class QRdecomposition extends MatrixProblem {
             for (int j = 0; j < i; j++) {
                 row.add(IntegerSym.valueOf(0));
             }
-            row.add(ExprUtils.getPositiveRandom(rand,1,4));
+            row.add(ExprUtils.getPositiveRandom(rand,1,4).times(IntegerSym.valueOf(n)));
             for (int j = i+1; j < rows.get(i).getSize(); j++) {
-                row.add(ExprUtils.getRandomNonNull(rand,-3,3).multiply(IntegerSym.valueOf(n)));
+                row.add(ExprUtils.getRandomNonNull(rand,-3,3).times(IntegerSym.valueOf(n)));
             }
             rowsR.add(new Row(row));
         }
@@ -49,10 +49,10 @@ public class QRdecomposition extends MatrixProblem {
 
     private Matrix createQ(){
 
-        int a  = rand.nextInt(4)*2;
-        int b  =rand.nextInt(4)*2;
-        int c  =rand.nextInt(4)*2;
-        int d = 0;
+        int a  = rand.nextInt(2)*2+1;
+        int b  =rand.nextInt(2)*2;
+        int c  =rand.nextInt(2)*2;
+        int d = rand.nextInt(2)*2;
         n = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(

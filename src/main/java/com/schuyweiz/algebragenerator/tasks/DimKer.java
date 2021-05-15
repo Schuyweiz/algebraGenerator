@@ -25,7 +25,7 @@ public class DimKer extends MatrixProblem{
     }
     private Matrix initA(){
         var matrix = Matrix.randDiag(4,rand);
-        return matrix.strongShuffle(rand,-3,3);
+        return matrix.strongShuffle(rand,-1,2,1);
     }
     private Matrix initB(){
         return A.mult(X);

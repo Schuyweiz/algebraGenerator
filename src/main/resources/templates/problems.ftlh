@@ -15,14 +15,4 @@
         <input type="submit" value="Submit" />
     </form>
 
-    <script type="text/javascript">
-
-        MyFunction = function(text,content){
-            $.ajax({
-                type: "POST",
-
-            })
-        }
-    </script>
-
 </@c.mjpage>

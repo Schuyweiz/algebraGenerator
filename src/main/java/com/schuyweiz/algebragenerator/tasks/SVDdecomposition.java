@@ -1,6 +1,9 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.utility.ExprUtils;
+import org.matheclipse.core.expression.IntegerSym;
+import org.matheclipse.core.interfaces.IExpr;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,6 +17,8 @@ public class SVDdecomposition extends MatrixProblem {
     private Matrix A;
     private Matrix V;
     private Matrix D;
+    private int nU;
+    private int nV;
     //U^T A V = D
 
     private String problemText = "Найти сингулярное разложение следующей матрицы: ";
@@ -23,16 +28,34 @@ public class SVDdecomposition extends MatrixProblem {
         this.rand = new Random(seed);
         this.U = createU();
         this.V = createV();
-        this.D = Matrix.randDiag(3,rand);
+        this.D = createD();
         this.A = U.mult(D).mult(V.transpose());
     }
 
+    private Matrix createD(){
+        var list = new ArrayList<IExpr>(
+                List.of(
+                        ExprUtils.getPositiveRandom(rand,1,3),
+                        ExprUtils.getPositiveRandom(rand,1,3),
+                        ExprUtils.getPositiveRandom(rand,1,3)
+                        )
+        );
+        return Matrix.diag(3,list).mult(Matrix.diag(3,
+                new ArrayList<>(
+                        List.of(
+                                IntegerSym.valueOf(nU*nV),
+                                IntegerSym.valueOf(nU*nV),
+                                IntegerSym.valueOf(nU*nV)
+                                )
+                )));
+    }
+
     private Matrix createU(){
-        int a  = rand.nextInt(4)*2;
-        int b  =rand.nextInt(4)*2;
-        int c  =rand.nextInt(4)*2;
-        int d = 0;
-        int n = a*a+ b*b + c*c + d*d;
+        int a  = rand.nextInt(2)*2+1;
+        int b  =rand.nextInt(2)*2;
+        int c  =rand.nextInt(2)*2;
+        int d = rand.nextInt(2)*2;
+        nU = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(
                 List.of(
@@ -41,15 +64,15 @@ public class SVDdecomposition extends MatrixProblem {
         for (int i = 0; i < order.size(); i++) {
             Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
         }
-        return Matrix.orthogonal(rand,order,n);
+        return Matrix.orthogonal(rand,order,nU);
     }
 
     private Matrix createV(){
-        int a  = rand.nextInt(4)*2;
-        int b  =rand.nextInt(4)*2;
-        int c  =rand.nextInt(4)*2;
-        int d = 0;
-        int n = a*a+ b*b + c*c + d*d;
+        int a  = rand.nextInt(2)*2+1;
+        int b  =rand.nextInt(2)*2;
+        int c  =rand.nextInt(2)*2;
+        int d = rand.nextInt(2)*2;
+        nV = a*a+ b*b + c*c + d*d;
 
         var order = new ArrayList<Integer>(
                 List.of(
@@ -58,7 +81,7 @@ public class SVDdecomposition extends MatrixProblem {
         for (int i = 0; i < order.size(); i++) {
             Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
         }
-        return Matrix.orthogonal(rand,order,n);
+        return Matrix.orthogonal(rand,order,nV);
     }
 
     @Override
@@ -83,9 +106,9 @@ public class SVDdecomposition extends MatrixProblem {
 
     @Override
     public String getAnswerContent()  {
-        return texExpression(
+        return "Один из возможных ответов: " + texExpression(
                 String.format(
-                        "%s = %s \\times %s \\times %s",
+                        "A = %s = U \\times \\Sigma \\times V^{-1} = %s \\times %s \\times %s",
                         getMatrixValues(A),
                         getMatrixValues(U),
                         getMatrixValues(D),

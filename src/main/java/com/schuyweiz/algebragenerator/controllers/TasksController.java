@@ -1,8 +1,10 @@
 package com.schuyweiz.algebragenerator.controllers;
 
 import com.schuyweiz.algebragenerator.TasksDocument;
+import com.schuyweiz.algebragenerator.tasks.MatrixAddSubMul;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblemFactory;
+import org.apache.tomcat.jni.Directory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.http.ContentDisposition;
@@ -19,10 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -32,14 +31,21 @@ public class TasksController {
     @Autowired
     private final TasksDocument document = new TasksDocument();
 
-    private MatrixProblem currentProblem;
+    private MatrixProblem currentProblem = new MatrixAddSubMul((int) System.currentTimeMillis());
+
+    @GetMapping("/")
+    public String greeting(
+            Map<String, Object> model
+    ){
+        return "/greeting";
+    }
 
     @GetMapping("/problems")
     public String problem(
             Map<String,Object> model, @RequestParam(name="type", defaultValue = "none") String type
     )throws Exception{
 
-        int seed =  new Random().nextInt(10);
+        int seed =  new Random().nextInt((int) System.currentTimeMillis());
         MatrixProblem problem;
 
         if (type.equals("none")){
@@ -48,12 +54,15 @@ public class TasksController {
         else
             problem = MatrixProblemFactory.typeof(type,seed);
 
+        //TODO:track amount of roblems, empty the problems after download
+
         String problemContent = problem.getProblemContent();
         String answerContent = problem.getAnswerContent();
         String problemText = problem.getProblemText();
         model.put("problem", problemContent);
         model.put("answer", answerContent);
         model.put("problemtext", problemText);
+        model.put("items", document.getSize());
         currentProblem = problem;
 
         return "/problems";
@@ -72,11 +81,16 @@ public class TasksController {
     public @ResponseBody
     ResponseEntity<byte[]> demo()
             throws IOException, InterruptedException {
-        
-        
-        String pathTasks = "src/main/resources/files/tasks.tex";
-        String pathAnswers = "src/main/resources/files/answers.tex";
-        document.createTasksTex("./src/main/resources/files/");
+
+        Random rand = new Random(System.currentTimeMillis());
+        String tname =  getRandomName(rand);
+        String aname =  getRandomName(rand);
+        String tasksName = "tasks" + tname + ".tex";
+        String answersName = "answers" + aname + ".tex";
+
+        String pathTasks = "src/main/resources/files/"+tasksName;
+        String pathAnswers = "src/main/resources/files/"+ answersName;
+        document.createTasksTex(pathTasks,pathAnswers);
         ProcessBuilder pb = new ProcessBuilder(
                 "/usr/bin/pdflatex",
                 "-output-directory=src/main/resources/files",
@@ -106,14 +120,15 @@ public class TasksController {
         p2.waitFor();
 
 
-        String zipPath = "src/main/resources/files/algebrator.zip";
+        String zipName = getRandomName(rand) + ".zip";
+        String zipPath = "src/main/resources/files/"+zipName;
         createZip(
                 zipPath,
                 new ArrayList<>(List.of(
                         pathTasks,
                     pathAnswers,
-                    "src/main/resources/files/tasks.pdf",
-                    "src/main/resources/files/answers.pdf")),
+                    "src/main/resources/files/tasks" + tname + ".pdf",
+                    "src/main/resources/files/answers" + aname + ".pdf")),
                 new ArrayList<>(
                         List.of(
                                 "/tasks.tex",
@@ -127,7 +142,11 @@ public class TasksController {
         var content = Files.readAllBytes(Path.of(zipPath));
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE); // (3) Content-Type: application/octet-stream
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("algebrator.zip").build().toString()); // (4) Content-Disposition: attachment; filename="demo-file.txt"
+        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("algebrator.zip").build().toString());
+        File dir = new File("src/main/resources/files");
+        for(File file: Objects.requireNonNull(dir.listFiles()))
+            if (!file.isDirectory())
+                file.delete();
         return ResponseEntity.ok().headers(httpHeaders).body(content);
     }
     
@@ -145,4 +164,19 @@ public class TasksController {
         zout.close();
     }
 
+    private String getRandomName(Random rand){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 16; i++) {
+            if (rand.nextBoolean())
+                sb.append('A' + rand.nextInt(26));
+            else
+                sb.append(rand.nextInt(10));
+        }
+        return sb.toString();
+    }
+
+    @GetMapping(value = "/reset")
+    public String reset(){
+        return "redirect:/";
+    }
 }

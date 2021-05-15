@@ -15,7 +15,7 @@ public class InverseMatrix extends MatrixProblem{
         this.rand = new Random(seed+1);
         this.matrix = Matrix.identity(3);
 
-        inverse = matrix.strongShuffle(rand,-3,3);
+        inverse = matrix.strongShuffle(rand,-2,2,3);
     }
 
     @Override
