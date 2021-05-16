@@ -12,10 +12,16 @@ public class MatrixAddSubMul extends MatrixProblem{
         this.rand = new Random(randomSeed);
         String sign = generateSign();
 
+        int height = rand.nextInt(2)+3;
+        int width = rand.nextInt(2)+3;
+        this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,height,width);
 
-
-        this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
-        this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
+        if (sign.equals("\\times")){
+            int secondWidth = rand.nextInt(2)+2;
+            secondTerm = Matrix.randomMatrix(this.rand, -5,5,width,secondWidth);
+        }
+        else
+            this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,height,width);
 
         if (sign.equals("+"))
             this.answer = firstTerm.add(secondTerm);
@@ -25,7 +31,6 @@ public class MatrixAddSubMul extends MatrixProblem{
             this.answer = firstTerm.mult(secondTerm);
 
         this.sign = " " + sign + " ";
-
     }
 
     private String generateSign(){
@@ -37,7 +42,7 @@ public class MatrixAddSubMul extends MatrixProblem{
 
     @Override
     public String getProblemText() {
-        return "вычислить результат выражения: ";
+        return "Вычислить результат выражения: ";
     }
 
     @Override
@@ -50,12 +55,12 @@ public class MatrixAddSubMul extends MatrixProblem{
         String firstTermString = getMatrixValues(this.firstTerm);
         String secondTermString = getMatrixValues(this.secondTerm);
 
-        return String.format("\\(%s\\)",firstTermString + sign + secondTermString);
+        return texExpression(String.format("%s",firstTermString + sign + secondTermString));
     }
 
     @Override
     public String getAnswerContent() {
-        return String.format("\\(%s\\)", getMatrixValues(answer));
+        return texExpression(getMatrixValues(answer));
     }
 
 

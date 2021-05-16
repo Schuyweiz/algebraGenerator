@@ -18,17 +18,12 @@ public class MatrixPowerN extends MatrixProblem {
     private Matrix A;
     private final int width;
     private final ArrayList<ArrayList<Integer>> opOrder = new ArrayList<>();
-    private final ArrayList<ElementaryCommand> commands;
 
     public MatrixPowerN(int seed) throws Exception {
         this.rand = new Random(seed);
         this.width = rand.nextInt(2)+3;
         this.P = Matrix.identity(width);
-        this.invP = Matrix.identity(width);
-        int commandsAmnt = rand.nextInt(3)+2;
-        this.commands = initCommands(commandsAmnt,width,3,1,2);
-        createMatrixP();
-        createMatrixInvP();
+        this.invP = P.weakShuffle(rand,-2,2);
         createMatrixQ();
         createMatrixA();
         createMatrixQn();

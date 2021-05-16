@@ -29,12 +29,13 @@ public class MatrixRank extends MatrixProblem {
     @Override
     public String getProblemContent() {
         String matrixString = getMatrixValues(matrix);
-        return String.format("\\(%s\\)",matrixString);
+        return texExpression(matrixString);
     }
 
     @Override
     public String getAnswerContent() {
-        return String.format("\\( %s rank = %s \\)", initialMatrix, rank);
+        return
+                texExpression( String.format("%s rank = %s", initialMatrix, rank));
     }
 
     private Matrix matrix;
