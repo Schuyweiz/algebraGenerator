@@ -12,6 +12,8 @@ public class MatrixAddSubMul extends MatrixProblem{
         this.rand = new Random(randomSeed);
         String sign = generateSign();
 
+
+
         this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
         this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,3,3);
 
