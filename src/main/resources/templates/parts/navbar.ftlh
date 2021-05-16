@@ -40,7 +40,7 @@
                     <#if size??>
                         <#if size gt 0>
 
-                            <a class="nav-link active nav-link-dark " aria-current="page" href="/download" onclick="refreshPage()">
+                            <a class="nav-link active nav-link-dark " aria-current="page" href="/download" onclick="reloadPage()">
                                 Импортировать задачи и ответы
                                 <#if items??>
                                     <span class="badge badge-light">${items}</span>
@@ -52,7 +52,7 @@
 
                         <#else>
 
-                            <a class="nav-link disabled nav-link-dark" aria-current="page" href="/download">
+                            <a class="nav-link disabled nav-link-dark" aria-current="page" >
                                 Импортировать задачи и ответы
                                 <#if items??>
                                     <span class="badge badge-light">${items}</span>
@@ -65,7 +65,7 @@
                         </#if>
 
                     <#else >
-                        <a class="nav-link disabled nav-link-dark" aria-current="page" href="/download">
+                        <a class="nav-link disabled nav-link-dark" aria-current="page" >
                             Импортировать задачи и ответы
                             <#if items??>
                                 <span class="badge badge-light">${items}</span>
@@ -97,7 +97,7 @@
 </script>
 
 <script>
-    async function refreshPage(){
+    async function reloadPage(){
         await new Promise(r => setTimeout(r, 1000));
         window.location.reload();
     }
