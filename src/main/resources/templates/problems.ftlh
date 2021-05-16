@@ -10,11 +10,23 @@
             <@c.ans "${answer}"/>
         </div>
     </div>
-
+        <button type="button" class="btn btn-dark btn-lg btn-block btn-primary" onclick="refreshPage()">
+            Другая задача
+        </button>
 
     <form action="/problems/add" method="post">
-        <input type="submit" value="Submit" />
+        <button type="submit" class="btn btn-dark btn-lg btn-block"  >
+            Добавить задачу
+        </button>
     </form>
     </#if>
+
+
+
+    <script>
+        function refreshPage(){
+            window.location.reload();
+        }
+    </script>
 
 </@c.mjpage>

@@ -30,6 +30,8 @@ public class TasksController {
 
     private MatrixProblem currentProblem = new MatrixAddSubMul((int) System.currentTimeMillis());
 
+    String currentType = "addsubmult";
+
     @GetMapping("/")
     public String greeting(
             Map<String, Object> model
@@ -42,7 +44,7 @@ public class TasksController {
         model.put("problemtext", problemText);
         model.put("items", document.getSize());
         model.put("size",document.getSize());
-        return "/problems";
+        return "redirect:/problems?addsubmult";
     }
 
     @GetMapping("/problems")
@@ -50,11 +52,15 @@ public class TasksController {
             Map<String,Object> model, @RequestParam(name="type", defaultValue = "none") String type
     )throws Exception{
 
-        int seed =  new Random().nextInt((int) System.currentTimeMillis());
+        int seed =  new Random((int) System.currentTimeMillis()).nextInt();
         MatrixProblem problem;
 
+        if (!type.equals("none")){
+            currentType = type;
+        }
+
         if (type.equals("none")){
-                problem = currentProblem;
+                problem = MatrixProblemFactory.typeof(currentType,seed);
         }
         else
             problem = MatrixProblemFactory.typeof(type,seed);
