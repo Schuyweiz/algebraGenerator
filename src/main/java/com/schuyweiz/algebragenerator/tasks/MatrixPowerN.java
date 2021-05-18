@@ -1,6 +1,5 @@
 package com.schuyweiz.algebragenerator.tasks;
 
-import com.schuyweiz.algebragenerator.ElementaryCommand;
 import com.schuyweiz.algebragenerator.matrix.Matrix;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.expression.F;
@@ -17,12 +16,11 @@ public class MatrixPowerN extends MatrixProblem {
     private Matrix Qn;
     private Matrix A;
     private final int width;
-    private final ArrayList<ArrayList<Integer>> opOrder = new ArrayList<>();
 
     public MatrixPowerN(int seed) throws Exception {
         this.rand = new Random(seed);
         this.width = rand.nextInt(2)+3;
-        this.P = Matrix.identity(width);
+        this.P = Matrix.randDiag(width,rand);
         this.invP = P.weakShuffle(rand,-2,2);
         createMatrixQ();
         createMatrixA();
@@ -49,18 +47,6 @@ public class MatrixPowerN extends MatrixProblem {
 
     private void createMatrixA() throws Exception {
         this.A = this.P.mult(Q).mult(invP);
-    }
-
-    private void createMatrixP() throws Exception {
-        for (ElementaryCommand command: commands){
-            P = elementaryOperation(command,P);
-        }
-    }
-
-    private void createMatrixInvP() throws Exception {
-        for (ElementaryCommand command: commands){
-            invP = elementaryOperationReverse(command,invP);
-        }
     }
 
     @Override

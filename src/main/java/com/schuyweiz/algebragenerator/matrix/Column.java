@@ -49,17 +49,6 @@ public class Column {
         return new Column(col);
     }
 
-    public Column sub(Column anotherCol) throws Exception {
-        ArrayList<IExpr> col = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            //this.content.set(i,this.content.get(i)*times);
-            var newNum = this.content.get(i).subtract(anotherCol.get(i));
-            col.add(newNum);
-        }
-        return new Column(col);
-    }
-
-
     public int getSize() {
         return size;
     }

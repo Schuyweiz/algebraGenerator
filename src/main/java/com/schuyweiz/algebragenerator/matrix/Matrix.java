@@ -1,9 +1,7 @@
 package com.schuyweiz.algebragenerator.matrix;
 
-import java.awt.desktop.PreferencesEvent;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
@@ -30,11 +28,6 @@ public class Matrix implements Cloneable{
         this.updateCols(toId);
     }
 
-    public void divRow(int rowId, IExpr coef){
-        IExpr e = F.Power(coef,IntegerSym.valueOf(-1));
-        multRow(rowId, e);
-        this.updateCols(rowId);
-    }
 
     public void swapRow(int fromId, int toId){
         Row temp = this.rows.get(fromId);
@@ -45,31 +38,6 @@ public class Matrix implements Cloneable{
     }
     //endregion
 
-    //region elementary operations on columns
-
-    public void multCol(int colId, IExpr coef){
-        var temp = cols.get(colId).mult(coef);
-        cols.set(colId,temp);
-        updateRows(colId);
-    }
-    public void addCol(int from, int to, IExpr coef) throws Exception {
-        var temp = cols.get(to).add(cols.get(from), coef);
-        cols.set(to,temp);
-        updateRows(to);
-    }
-    public void divCol(int at, IExpr coef){
-        IExpr e = F.Power(coef,IntegerSym.valueOf(-1));
-        multCol(at,e);
-        updateRows(at);
-
-    }
-    public void swapCol(int from, int to){
-        var temp = cols.get(from);
-        cols.set(from,cols.get(to));
-        cols.set(to, temp);
-        updateRows(to);
-        updateRows(from);
-    }
 
     //endregion
 
@@ -257,20 +225,12 @@ public class Matrix implements Cloneable{
     private void setCol(int i, int j, IExpr newValue){
         this.cols.get(j).set(i,newValue);
     }
-    private void setRow(int i, int j, IExpr newValue){
-        this.rows.get(i).set(j,newValue);
-    }
 
     private void updateCols(int at){
         for (int colId = 0; colId < cols.size(); colId++) {
                 setCol(at,colId,
                         rows.get(at).get(colId));
 
-        }
-    }
-    private void updateRows(int at){
-        for (int i = 0; i < rows.size(); i++) {
-            setRow(i,at,cols.get(at).get(i));
         }
     }
 
@@ -340,7 +300,7 @@ public class Matrix implements Cloneable{
         }
 
         for (int i = 0; i < height*cycles; i++) {
-            int id = getId(height, i,rand);
+            int id = getRandomId(height, i,rand);
             IExpr coef = ExprUtils.getRandomNonNull(rand,left, right);
 
             this.multCurrent(
@@ -404,7 +364,7 @@ public class Matrix implements Cloneable{
         }
 
         for (int i = 0; i < height; i++) {
-            int id = getId(height, i,rand);
+            int id = getRandomId(height, i,rand);
             swapRow(order.get(i), id);
         }
     }
@@ -416,7 +376,7 @@ public class Matrix implements Cloneable{
         return identity;
     }
 
-    private int getId(int size, int current, Random random){
+    private int getRandomId(int size, int current, Random random){
         return (current + random.nextInt(size-1)+1)%size;
     }
 

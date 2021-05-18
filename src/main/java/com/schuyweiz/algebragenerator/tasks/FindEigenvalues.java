@@ -29,19 +29,6 @@ public class FindEigenvalues extends MatrixProblem{
         }
     }
 
-    private void eigenvaluesShuffle() throws Exception {
-        Matrix A = Matrix.identity(3);
-        this.commands = initCommands(5,3,4,0,1,2);
-        for (int i = 0; i < commands.size(); i++) {
-            A = this.elementaryOperation(commands.get(i),A);
-        }
-        Matrix invA = Matrix.identity(3);
-        for (int i = 0; i < commands.size(); i++) {
-            invA = this.elementaryOperationReverse(commands.get(i),invA);
-        }
-        matrix = invA.mult(matrix).mult(A);
-    }
-
     private void initEigenvalues(){
         ArrayList<IExpr> values =  new ArrayList<>();
         for (int i = 0; i < 3; i++) {

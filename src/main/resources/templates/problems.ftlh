@@ -1,5 +1,14 @@
 <#import "parts/common.ftlh" as c>
 <@c.mjpage>
+    <button type="button" class="btn btn-dark btn-lg btn-block btn-primary" onclick="refreshPage()">
+        Другая задача
+    </button>
+
+    <form action="/problems/add" method="post">
+        <button type="submit" class="btn btn-dark btn-lg btn-block"  >
+            Добавить задачу
+        </button>
+    </form>
     <#if problemtext??>
     <div class="container">
         <div class="row" align="center">
@@ -10,15 +19,7 @@
             <@c.ans "${answer}"/>
         </div>
     </div>
-        <button type="button" class="btn btn-dark btn-lg btn-block btn-primary" onclick="refreshPage()">
-            Другая задача
-        </button>
 
-    <form action="/problems/add" method="post">
-        <button type="submit" class="btn btn-dark btn-lg btn-block"  >
-            Добавить задачу
-        </button>
-    </form>
     </#if>
 
 
@@ -28,5 +29,6 @@
             window.location.reload();
         }
     </script>
+
 
 </@c.mjpage>

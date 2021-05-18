@@ -13,7 +13,16 @@ public class InverseMatrix extends MatrixProblem{
 
     public InverseMatrix(int seed) throws Exception {
         this.rand = new Random(seed+1);
-        this.matrix = Matrix.identity(3);
+        int width = 3;
+
+        if (rand.nextBoolean()){
+            int rank = rand.nextInt(width-1)+1;
+            matrix = Matrix.ofRank(width,width,rank,rand);
+            isInvertible = false;
+        }
+        else{
+            matrix = Matrix.identity(width);
+        }
 
         inverse = matrix.strongShuffle(rand,-2,2,3);
     }
@@ -38,7 +47,8 @@ public class InverseMatrix extends MatrixProblem{
     @Override
     public String getAnswerContent() {
         String reverseString = getMatrixValues(this.inverse);
-
+        if (!isInvertible)
+            return "Матрица не обратима";
         return texExpression(reverseString);
     }
 }

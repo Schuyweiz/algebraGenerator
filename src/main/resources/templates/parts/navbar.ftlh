@@ -90,7 +90,8 @@
             url: "/reset",
             method: 'POST',
             success: function() {
-                console.log("я получил и жив");
+                console.warn("warning1");
+                console.debug("im here");
             }
         });
     }

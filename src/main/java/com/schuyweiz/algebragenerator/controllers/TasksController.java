@@ -90,7 +90,7 @@ public class TasksController {
 
     @GetMapping(value = "/download")
     public @ResponseBody
-    ResponseEntity<byte[]> demo()
+    ResponseEntity<byte[]> download()
             throws IOException, InterruptedException {
 
         Random rand = new Random(System.currentTimeMillis());
