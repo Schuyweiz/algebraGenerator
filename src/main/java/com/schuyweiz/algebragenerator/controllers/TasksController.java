@@ -78,11 +78,11 @@ public class TasksController {
     }
 
 
-    @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/problems/add")
-    public void add()
+    public String add()
     {
         document.addTask(currentProblem);
+        return "redirect:/problems";
     }
 
     @GetMapping(value = "/download")
