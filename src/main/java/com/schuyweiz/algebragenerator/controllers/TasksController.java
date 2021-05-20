@@ -5,10 +5,7 @@ import com.schuyweiz.algebragenerator.tasks.MatrixAddSubMul;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
 import com.schuyweiz.algebragenerator.tasks.MatrixProblemFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,11 +78,11 @@ public class TasksController {
     }
 
 
+    @ResponseStatus(value = HttpStatus.OK)
     @PostMapping("/problems/add")
-    public String add()
+    public void add()
     {
         document.addTask(currentProblem);
-        return "redirect:/problems";
     }
 
     @GetMapping(value = "/download")
