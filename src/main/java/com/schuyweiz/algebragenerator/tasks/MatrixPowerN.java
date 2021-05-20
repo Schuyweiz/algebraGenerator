@@ -69,11 +69,8 @@ public class MatrixPowerN extends MatrixProblem {
 
     @Override
     public String getAnswerContent()  {
-        Matrix m = this.P.mult(this.Qn).mult(this.invP);
-        String pInvString = getMatrixValues(m);
 
-        return String.format("\\( %s%s%s \\\\= %s\\)",
-                getMatrixValues(P),getMatrixValues(Qn),getMatrixValues(invP),pInvString);
+        return texExpression(getMatrixValues(Qn));
 
     }
 }

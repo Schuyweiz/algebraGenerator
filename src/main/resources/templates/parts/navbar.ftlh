@@ -27,13 +27,12 @@
                         <li><a class="dropdown-item" href="/problems?type=powern">Поиск n-ой степени матрицы</a></li>
                         <li><a class="dropdown-item" href="/problems?type=inverse">Определить обратимость матрицы</a></li>
                         <li><a class="dropdown-item" href="/problems?type=eigenvalues">Найти собственные значения</a></li>
-                        <li><a class="dropdown-item" href="/problems?type=jordan">Привести к форме Жордана</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=jordan">Привести к нормальной форме Жордана</a></li>
                         <li><a class="dropdown-item" href="/problems?type=qr">Найти QR разложение матрицы</a></li>
-                        <li><a class="dropdown-item" href="/problems?type=orthdiag">Найти даигональную матрицу и ортогональное преобразование</a></li>
+                        <li><a class="dropdown-item" href="/problems?type=orthdiag">Найти диагональную матрицу и ортогональное преобразование</a></li>
                         <li><a class="dropdown-item" href="/problems?type=svd">Провести сингулярное разложение над матрицей</a></li>
                         <li><a class="dropdown-item" href="/problems?type=rot">Найти угол и ось вращения ортогонального оператора</a></li>
                         <li><a class="dropdown-item" href="/problems?type=dimker">Найти размерность ядра и отображения матрицы перехода</a></li>
-
                     </ul>
                 </li>
                 <li class="nav-item">
@@ -41,7 +40,7 @@
                         <#if size gt 0>
 
                             <a class="nav-link active nav-link-dark " aria-current="page" href="/download" onclick="reloadPage()">
-                                Импортировать задачи и ответы
+                                Экспортировать задачи и ответы
                                 <#if items??>
                                     <span class="badge badge-light">${items}</span>
                                 <#else>
@@ -53,7 +52,7 @@
                         <#else>
 
                             <a class="nav-link disabled nav-link-dark" aria-current="page" >
-                                Импортировать задачи и ответы
+                                Экспортировать задачи и ответы
                                 <#if items??>
                                     <span class="badge badge-light">${items}</span>
                                 <#else>
@@ -66,7 +65,7 @@
 
                     <#else >
                         <a class="nav-link disabled nav-link-dark" aria-current="page" >
-                            Импортировать задачи и ответы
+                            Экспортировать задачи и ответы
                             <#if items??>
                                 <span class="badge badge-light">${items}</span>
                             <#else>

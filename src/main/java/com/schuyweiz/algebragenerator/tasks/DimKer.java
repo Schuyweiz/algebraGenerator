@@ -57,9 +57,9 @@ public class DimKer extends MatrixProblem{
     public String getAnswerContent() {
         return String.format(
                 "%s\n" +
-                        "rank = %s",
+                        "Размерность отображения = %s, Размерность ядра = %s",
                 texExpression("X = " + getMatrixValues(X)),
-                rank
+                rank, 4 - rank
         );
     }
 }
