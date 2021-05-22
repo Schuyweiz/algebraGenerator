@@ -92,6 +92,10 @@ public class TasksController {
     ResponseEntity<byte[]> download()
             throws IOException, InterruptedException {
 
+        if (document.getSize()<1){
+            return ResponseEntity.badRequest().body("An error has occured.<br><a href=\"/problems\"> return to main page</a>".getBytes());
+        }
+
         Random rand = new Random(System.currentTimeMillis());
         String tname =  getRandomName(rand);
         String aname =  getRandomName(rand);

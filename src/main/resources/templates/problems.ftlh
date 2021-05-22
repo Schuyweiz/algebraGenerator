@@ -29,12 +29,12 @@
     </script>
     <script>
         function  add() {
-            console.log("Ya ttut");
+            console.log("Add method called");
 
             $.ajax({
                 url: "/problems/add",
                 method: 'POST',
-                success: function() {
+                complete: function (){
                     refreshPage();
                 }
             });
