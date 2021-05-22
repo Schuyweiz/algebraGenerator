@@ -81,24 +81,11 @@
     </div>
 </nav>
 
-<script>
-    function  func() {
-        console.log("Ya ttut");
-
-        $.ajax({
-            url: "/reset",
-            method: 'POST',
-            success: function() {
-                console.warn("warning1");
-                console.debug("im here");
-            }
-        });
-    }
-</script>
 
 <script>
     async function reloadPage(){
-        await new Promise(r => setTimeout(r, 1000));
+        console.log("Reloading page. Before promise");
+        await new Promise(r => setTimeout(r, 1500));
         window.location.reload();
     }
 </script>

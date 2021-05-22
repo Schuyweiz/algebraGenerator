@@ -192,10 +192,10 @@ public class TasksController {
         return sb.toString();
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping (value = "/reset")
-    public String endSession(){
+    public void endSession(){
         this.document = new TasksDocument();
-        return "redirect:/";
     }
 
     @GetMapping(value = "/reset")

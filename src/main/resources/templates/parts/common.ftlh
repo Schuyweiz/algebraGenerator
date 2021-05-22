@@ -42,20 +42,30 @@
         <#nested>
     </div>
     <script>
-        window.sessionStorage.setItem("reloaded", 'yes');
-        window.onunload = function() {
-            console.log("Unload even triggered");
+        window.onload = function() {
+            console.log("Load event triggered");
 
-            if (sessionStorage.getItem("reloaded")!=null) {
+            console.log("Session storage item is " + sessionStorage.getItem("reloaded"));
+
+            if (sessionStorage.getItem("reloaded")===null) {
                 $.ajax({
                     url: "/reset",
                     method: 'POST',
                     success: function () {
                         console.log("POST reset triggered");
+                    },
+                    complete: function (){
+                        console.log("Reloading page after reset");
+                        console.log("Creating reloaded session object");
+                        window.sessionStorage.setItem("reloaded", 'yes');
+                      refreshPage();
                     }
                 });
             }
+
         }
+
+
     </script>
 
     </body>
