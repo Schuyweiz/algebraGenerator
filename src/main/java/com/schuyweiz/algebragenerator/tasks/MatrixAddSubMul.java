@@ -1,36 +1,24 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.model.Problem;
+import com.schuyweiz.algebragenerator.utility.MatrixUtils;
+import com.schuyweiz.algebragenerator.utility.TexUtils;
+import jdk.jshell.execution.Util;
+
 import java.util.Random;
 
 public class MatrixAddSubMul extends MatrixProblem{
 
     private final String sign;
+    private final int width;
+    private final int height;
 
     public MatrixAddSubMul(int randomSeed) {
-
-        this.rand = new Random(randomSeed);
-        String sign = generateSign();
-
-        int height = rand.nextInt(2)+3;
-        int width = rand.nextInt(2)+3;
-        this.firstTerm = Matrix.randomMatrix(this.rand, -5,5,height,width);
-
-        if (sign.equals("\\times")){
-            int secondWidth = rand.nextInt(2)+2;
-            secondTerm = Matrix.randomMatrix(this.rand, -5,5,width,secondWidth);
-        }
-        else
-            this.secondTerm = Matrix.randomMatrix(this.rand, -5,5,height,width);
-
-        if (sign.equals("+"))
-            this.answer = firstTerm.add(secondTerm);
-        if (sign.equals("-"))
-            this.answer = firstTerm.sub(secondTerm);
-        if (sign.equals("\\times"))
-            this.answer = firstTerm.mult(secondTerm);
-
-        this.sign = " " + sign + " ";
+        super(randomSeed,"Вычислить результат выражения: ");
+        sign = generateSign();
+        height = MatrixUtils.basedRandom(2,3,rand);
+        width = MatrixUtils.basedRandom(2,3,rand);
     }
 
     private String generateSign(){
@@ -41,27 +29,55 @@ public class MatrixAddSubMul extends MatrixProblem{
     }
 
     @Override
-    public String getProblemText() {
-        return "Вычислить результат выражения: ";
+    protected String getProblemQuestion(Matrix... matrices) {
+        var first = matrices[0];
+        var second = matrices[1];
+        return TexUtils.getTex(
+                String.format("%s %s %s",
+                        TexUtils.getMatrixTex(first),
+                        sign,
+                        TexUtils.getMatrixTex(second))
+        );
     }
 
     @Override
-    public String getAnswerText() {
-        return null;
+    protected String getProblemAnswer(Matrix... matrices) {
+        var answer = matrices[0];
+        return TexUtils.getTex(
+                TexUtils.getMatrixTex(answer)
+        );
     }
 
     @Override
-    public String getProblemContent() {
-        String firstTermString = getMatrixValues(this.firstTerm);
-        String secondTermString = getMatrixValues(this.secondTerm);
+    public Problem generate() {
+        var firstTerm = Matrix.randomMatrix(this.rand, -5,5,height,width);
+        var secondTerm = getSecondTerm();
+        var result = getResult(firstTerm,secondTerm);
 
-        return texExpression(String.format("%s",firstTermString + sign + secondTermString));
+        return new Problem(
+                getProblemQuestion(firstTerm,secondTerm),
+                getProblemAnswer(result)
+        );
     }
 
-    @Override
-    public String getAnswerContent() {
-        return texExpression(getMatrixValues(answer));
+    private Matrix getResult(Matrix firstTerm, Matrix secondTerm) {
+        Matrix answer = null;
+        if (sign.trim().equals("+"))
+            answer = firstTerm.add(secondTerm);
+        if (sign.trim().equals("-"))
+            answer = firstTerm.sub(secondTerm);
+        if (sign.trim().equals("\\times"))
+            answer = firstTerm.mult(secondTerm);
+
+        return answer;
     }
 
-
+    private Matrix getSecondTerm(){
+        if (sign.trim().equals("\\times")){
+            int secondWidth = rand.nextInt(2)+2;
+            return Matrix.randomMatrix(this.rand, -5,5,width,secondWidth);
+        }
+        else
+            return Matrix.randomMatrix(this.rand, -5,5,height,width);
+    }
 }

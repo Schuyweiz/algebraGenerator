@@ -1,6 +1,7 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.model.Problem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.interfaces.IExpr;
@@ -72,5 +73,20 @@ public class MatrixPowerN extends MatrixProblem {
 
         return texExpression(getMatrixValues(Qn));
 
+    }
+
+    @Override
+    protected String getProblemQuestion(Matrix... matrices) {
+        return null;
+    }
+
+    @Override
+    protected String getProblemAnswer(Matrix... matrices) {
+        return null;
+    }
+
+    @Override
+    public Problem generate() {
+        return null;
     }
 }

@@ -1,65 +1,58 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.model.Problem;
+import com.schuyweiz.algebragenerator.utility.MatrixUtils;
+import com.schuyweiz.algebragenerator.utility.TexUtils;
 
-import java.util.Random;
+public class DimKer extends MatrixProblem {
 
-public class DimKer extends MatrixProblem{
-
-    private Matrix A;
-    private Matrix B;
-    private Matrix X;
     private int rank;
-    private String problemText = "Найти ранг ядра и отображения\n матрицы перехода из А в В";
+    private static final int MAX_RANK = 4;
+    private static final int SIZE = 4;
 
-    public DimKer(int seed){
-        this.rand = new Random(seed);
-        this.rank = rand.nextInt(3)+1;
-        this.A = initA();
-        this.X = initX();
-        this.B = initB();
-    }
-
-    private Matrix initX(){
-        return Matrix.ofRank(4,4,rank,rand);
-    }
-    private Matrix initA(){
-        var matrix = Matrix.randDiag(4,rand);
-        return matrix.strongShuffle(rand,-1,2,1);
-    }
-    private Matrix initB(){
-        return A.mult(X);
+    public DimKer(int seed) {
+        super(seed, "Найти ранг ядра и отображения матрицы перехода из А в В");
     }
 
     @Override
-    public String getProblemText() {
-        return problemText;
-    }
-
-    @Override
-    public String getAnswerText() {
-        return null;
-    }
-
-    @Override
-    public String getProblemContent() {
-        return texExpression(
-                String.format(
-                        "A = %s\n" +
-                                "B = %s",
-                        getMatrixValues(A),
-                        getMatrixValues(B)
+    protected String getProblemQuestion(Matrix... matrices) {
+        var A = matrices[0];
+        var B = matrices[1];
+        var expression = TexUtils.getTex(
+                String.format("A = %s\nB = %s",
+                        TexUtils.getMatrixTex(A),
+                        TexUtils.getMatrixTex(B)
                 )
+        );
+
+        return this.problemText + expression;
+    }
+
+    @Override
+    protected String getProblemAnswer(Matrix... matrices) {
+        var X = matrices[0];
+
+        return String.format(
+                "%s\nРазмерность отображения = %s, Размерность ядра = %s",
+                TexUtils.getTex("X = " + TexUtils.getMatrixTex(X)),
+                rank,
+                MAX_RANK - rank
         );
     }
 
     @Override
-    public String getAnswerContent() {
-        return String.format(
-                "%s\n" +
-                        "Размерность отображения = %s, Размерность ядра = %s",
-                texExpression("X = " + getMatrixValues(X)),
-                rank, 4 - rank
+    public Problem generate() {
+        //AX = B
+        //ищем dim  и  ker матрицы X
+        this.rank = MatrixUtils.basedRandom(1, 3, rand);
+        Matrix A = Matrix.randDiag(SIZE, rand).strongShuffle(rand, -1, 2, 1);
+        Matrix X = Matrix.ofRank(SIZE, SIZE, rank, rand);
+        Matrix B = A.mult(X);
+
+        return new Problem(
+                getProblemQuestion(A, B),
+                getProblemAnswer(X)
         );
     }
 }

@@ -1,6 +1,6 @@
 package com.schuyweiz.algebragenerator.tasks;
 
-import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.exception.MatrixProblemException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,36 +8,52 @@ import java.util.Random;
 
 public class MatrixProblemFactory {
 
-    public static MatrixProblem typeof(String type, int seed) throws Exception {
+    public static MatrixProblem generateProblem(String type, int seed) throws Exception {
 
+        MatrixProblem problem = null;
         switch (type){
             case "qr":
-                return new QRdecomposition(seed);
+                problem =new  QRdecomposition(seed);
+                break;
             case "orthdiag":
-                return new OrthgonalDiag(seed);
+                problem = new OrthgonalDiag(seed);
+                break;
             case "eigenvalues":
-                return new FindEigenvalues(seed);
+                problem = new FindEigenvalues(seed);
+                break;
             case "inverse":
-                return new InverseMatrix(seed);
+                problem = new InverseMatrix(seed);
+                break;
             case "addsubmult":
-                return new MatrixAddSubMul(seed);
+                problem = new MatrixAddSubMul(seed);
+                break;
             case "powern":
-                return new MatrixPowerN(seed);
+                problem = new MatrixPowerN(seed);
+                break;
             case "rank":
-                return new MatrixRank(seed);
+                problem = new MatrixRank(seed);
+                break;
             case "jordan":
-                return new JordanCanonical(seed);
+                problem = new JordanCanonical(seed);
+                break;
             case  "svd":
-                return new SVDdecomposition(seed);
+                problem = new SVDdecomposition(seed);
+                break;
             case "rot":
-                return new RotationAroundAxis(seed);
+                problem = new RotationAroundAxis(seed);
+                break;
             case  "dimker":
-                return new DimKer(seed);
+                problem = new DimKer(seed);
+                break;
+            default:
+                throw new MatrixProblemException("Unrecognized type of the problem.");
         }
-        return null;
+
+        problem.generate();
+        return problem;
     }
 
-    public static MatrixProblem getRandomProblem(Random rand, int seed) throws Exception {
+    public static MatrixProblem createRandomProblem(Random rand, int seed) throws Exception {
         ArrayList<String> vars = new ArrayList<>(
                 List.of(
                         "qr",
@@ -53,7 +69,7 @@ public class MatrixProblemFactory {
                         "dimker"
                 )
         );
-        return typeof(
+        return generateProblem(
                 vars.get(rand.nextInt(vars.size())),
                 seed
         );
