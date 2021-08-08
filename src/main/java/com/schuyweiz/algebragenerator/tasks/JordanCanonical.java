@@ -53,17 +53,15 @@ public class JordanCanonical extends MatrixProblem {
     @Override
     protected String getProblemQuestion(Matrix... matrices) {
         var problemMatrix = matrices[0];
-        return TexUtils.getTex(
-                String.format("%s", TexUtils.getMatrixTex(problemMatrix))
-        );
+
+        return String.format("%s", TexUtils.getMatrixTex(problemMatrix));
     }
 
     @Override
     protected String getProblemAnswer(Matrix... matrices) {
         var jordan = matrices[0];
-        return TexUtils.getTex(
-                String.format("%s", TexUtils.getMatrixTex(jordan))
-        );
+
+        return String.format("%s", TexUtils.getMatrixTex(jordan));
     }
 
     @Override
@@ -74,6 +72,7 @@ public class JordanCanonical extends MatrixProblem {
         var problemMatrix = A.mult(jordanMatrix).mult(invA);
 
         return new Problem(
+                this.problemText,
                 getProblemQuestion(problemMatrix),
                 getProblemAnswer(jordanMatrix)
         );

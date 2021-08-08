@@ -37,32 +37,32 @@ public class FindEigenvalues extends MatrixProblem {
     @Override
     protected String getProblemQuestion(Matrix... matrices) {
         var A = matrices[0];
-        return TexUtils.getTex(
-                String.format("%s", TexUtils.getMatrixTex(A))
-        );
+
+        return String.format("%s", TexUtils.getMatrixTex(A));
     }
 
     @Override
     protected String getProblemAnswer(Matrix... matrices) {
         var D = matrices[0];
-        return TexUtils.getTex(
-                IntStream.range(0, D.getHeight())
+
+        return IntStream.range(0, D.getHeight())
                         .map(i -> D.get(i, i).toIntDefault())
                         .mapToObj(Integer::toString)
-                        .collect(Collectors.joining(" ,"))
+                        .collect(Collectors.joining(" ,")
         );
     }
 
     @Override
     public Problem generate() {
         ArrayList<IExpr> eigenvalues = initEigenvalues(EIGENVALUES_AMOUNT, L_BORDER, R_BORDER);
-        var diagMatrix = Matrix.diag(EIGENVALUES_AMOUNT, eigenvalues);
+        var diagMatrix = Matrix.diag(eigenvalues);
         //A = P D invP
         var P = Matrix.identity(A_SIZE);
         var invP = P.strongShuffle(rand, L_SHUFFLE_LIM, R_SHUFFLE_LIM, CYCLES);
         var A = invP.mult(diagMatrix).mult(P);
 
         return new Problem(
+                this.problemText,
                 getProblemQuestion(A),
                 getProblemAnswer()
         );

@@ -32,20 +32,18 @@ public class MatrixAddSubMul extends MatrixProblem{
     protected String getProblemQuestion(Matrix... matrices) {
         var first = matrices[0];
         var second = matrices[1];
-        return TexUtils.getTex(
-                String.format("%s %s %s",
+
+        return String.format("%s %s %s",
                         TexUtils.getMatrixTex(first),
                         sign,
-                        TexUtils.getMatrixTex(second))
-        );
+                        TexUtils.getMatrixTex(second));
     }
 
     @Override
     protected String getProblemAnswer(Matrix... matrices) {
         var answer = matrices[0];
-        return TexUtils.getTex(
-                TexUtils.getMatrixTex(answer)
-        );
+
+        return TexUtils.getMatrixTex(answer);
     }
 
     @Override
@@ -55,6 +53,7 @@ public class MatrixAddSubMul extends MatrixProblem{
         var result = getResult(firstTerm,secondTerm);
 
         return new Problem(
+                this.problemText,
                 getProblemQuestion(firstTerm,secondTerm),
                 getProblemAnswer(result)
         );

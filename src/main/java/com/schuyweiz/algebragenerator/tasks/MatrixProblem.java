@@ -13,7 +13,6 @@ public abstract class MatrixProblem {
 
         protected Random rand;
         protected String problemText;
-        protected String answerText;
 
         protected MatrixProblem(int seed, String problemText){
                 this.rand = new Random(seed);

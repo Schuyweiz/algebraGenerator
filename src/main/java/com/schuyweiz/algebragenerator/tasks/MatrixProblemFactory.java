@@ -16,7 +16,7 @@ public class MatrixProblemFactory {
                 problem =new  QRdecomposition(seed);
                 break;
             case "orthdiag":
-                problem = new OrthgonalDiag(seed);
+                problem = new OrthogonalDiag(seed);
                 break;
             case "eigenvalues":
                 problem = new FindEigenvalues(seed);

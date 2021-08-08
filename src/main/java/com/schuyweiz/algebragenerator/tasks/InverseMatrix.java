@@ -22,17 +22,15 @@ public class InverseMatrix extends MatrixProblem {
     @Override
     protected String getProblemQuestion(Matrix... matrices) {
         var matrix = matrices[0];
-        return TexUtils.getTex(
-                TexUtils.getMatrixTex(matrix)
-        );
+
+        return TexUtils.getMatrixTex(matrix);
     }
 
     @Override
     protected String getProblemAnswer(Matrix... matrices) {
         var inverse = matrices[0];
-        return TexUtils.getTex(
-                TexUtils.getMatrixTex(inverse)
-        );
+
+        return TexUtils.getMatrixTex(inverse);
     }
 
     @Override
@@ -42,6 +40,7 @@ public class InverseMatrix extends MatrixProblem {
         var invMatrix = matrix.strongShuffle(rand, L_SHUFFLE_BORDER, R_SHUFFLE_BORDER, CYCLES);
 
         return new Problem(
+                this.problemText,
                 getProblemQuestion(matrix),
                 isInvertible ? getProblemQuestion(invMatrix) : NON_INVERTIBLE_TEXT
         );

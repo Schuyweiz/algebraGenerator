@@ -1,119 +1,117 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.model.Problem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
+import com.schuyweiz.algebragenerator.utility.TexUtils;
 import org.matheclipse.core.expression.IntegerSym;
-import org.matheclipse.core.interfaces.IExpr;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class SVDdecomposition extends MatrixProblem {
 
-
-    private Matrix U;
-    private Matrix A;
-    private Matrix V;
-    private Matrix D;
-    private int nU;
-    private int nV;
+    private final int nU, aU, bU, cU, dU;
+    private final int nV, aV, bV, cV, dV;
     //U^T A V = D
 
-    private String problemText = "Найти сингулярное разложение следующей матрицы: ";
+
+    public SVDdecomposition(int seed) {
+        super(seed, "Найти сингулярное разложение следующей матрицы: ");
+
+        aU = rand.nextInt(2) * 2 + 1;
+        bU = rand.nextInt(2) * 2;
+        cU = rand.nextInt(2) * 2;
+        dU = rand.nextInt(2) * 2;
+        nU = aU * aU + bU * bU + cU * cU + dU * dU;
+
+        aV = rand.nextInt(2) * 2 + 1;
+        bV = rand.nextInt(2) * 2;
+        cV = rand.nextInt(2) * 2;
+        dV = rand.nextInt(2) * 2;
+
+        nV = aV * aV + bV * bV + cV * cV + dV * dV;
 
 
-    public SVDdecomposition(int seed){
-        this.rand = new Random(seed);
-        this.U = createU();
-        this.V = createV();
-        this.D = createD();
-        this.A = U.mult(D).mult(V.transpose());
     }
 
-    private Matrix createD(){
-        var list = new ArrayList<IExpr>(
+    private Matrix createD() {
+        var list = new ArrayList<>(
                 List.of(
-                        ExprUtils.getPositiveRandom(rand,1,3),
-                        ExprUtils.getPositiveRandom(rand,1,3),
-                        ExprUtils.getPositiveRandom(rand,1,3)
-                        )
-        );
-        return Matrix.diag(3,list).mult(Matrix.diag(3,
-                new ArrayList<>(
-                        List.of(
-                                IntegerSym.valueOf(nU*nV),
-                                IntegerSym.valueOf(nU*nV),
-                                IntegerSym.valueOf(nU*nV)
-                                )
-                )));
-    }
-
-    private Matrix createU(){
-        int a  = rand.nextInt(2)*2+1;
-        int b  =rand.nextInt(2)*2;
-        int c  =rand.nextInt(2)*2;
-        int d = rand.nextInt(2)*2;
-        nU = a*a+ b*b + c*c + d*d;
-
-        var order = new ArrayList<Integer>(
-                List.of(
-                        a,b,c,d
-                ));
-        for (int i = 0; i < order.size(); i++) {
-            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
-        }
-        return Matrix.orthogonal(rand,order,nU);
-    }
-
-    private Matrix createV(){
-        int a  = rand.nextInt(2)*2+1;
-        int b  =rand.nextInt(2)*2;
-        int c  =rand.nextInt(2)*2;
-        int d = rand.nextInt(2)*2;
-        nV = a*a+ b*b + c*c + d*d;
-
-        var order = new ArrayList<Integer>(
-                List.of(
-                        a,b,c,d
-                ));
-        for (int i = 0; i < order.size(); i++) {
-            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
-        }
-        return Matrix.orthogonal(rand,order,nV);
-    }
-
-    @Override
-    public String getProblemText() {
-        return problemText;
-    }
-
-    @Override
-    public String getAnswerText() {
-        return "";
-    }
-
-    @Override
-    public String getProblemContent() {
-        return texExpression(
-                String.format(
-                        "%s",
-                        getMatrixValues(A)
+                        ExprUtils.getPositiveRandom(rand, 1, 3),
+                        ExprUtils.getPositiveRandom(rand, 1, 3),
+                        ExprUtils.getPositiveRandom(rand, 1, 3)
                 )
         );
+        return Matrix.diag(list).mult(Matrix.diag(new ArrayList<>(
+                List.of(
+                        IntegerSym.valueOf(nU * nV),
+                        IntegerSym.valueOf(nU * nV),
+                        IntegerSym.valueOf(nU * nV)
+                )
+        )));
+    }
+
+    private Matrix createU() {
+        var order = new ArrayList<>(
+                List.of(
+                        aU, bU, cU, dU
+                ));
+        for (int i = 0; i < order.size(); i++) {
+            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
+        }
+
+        return Matrix.orthogonal(rand, order, nU);
+    }
+
+    private Matrix createV() {
+        var order = new ArrayList<>(
+                List.of(
+                        aV, bV, cV, dV
+                ));
+        for (int i = 0; i < order.size(); i++) {
+            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
+        }
+
+        return Matrix.orthogonal(rand, order, nV);
     }
 
     @Override
-    public String getAnswerContent()  {
-        return "Один из возможных ответов: " + texExpression(
+    protected String getProblemQuestion(Matrix... matrices) {
+        var A = matrices[0];
+
+        return String.format("%s", TexUtils.getMatrixTex(A));
+    }
+
+    @Override
+    protected String getProblemAnswer(Matrix... matrices) {
+        var A = matrices[0];
+        var U = matrices[1];
+        var D = matrices[2];
+        var V = matrices[3];
+
+        return "Один из возможных ответов: " +
                 String.format(
                         "A = %s = U \\times \\Sigma \\times V^{-1} = %s \\times %s \\times %s",
-                        getMatrixValues(A),
-                        getMatrixValues(U),
-                        getMatrixValues(D),
-                        getMatrixValues(V.transpose())
-                )
+                        TexUtils.getMatrixTex(A),
+                        TexUtils.getMatrixTex(U),
+                        TexUtils.getMatrixTex(D),
+                        TexUtils.getMatrixTex(V.transpose())
+                );
+    }
+
+    @Override
+    public Problem generate() {
+        var U = createU();
+        var V = createV();
+        var D = createD();
+        var A = U.mult(D).mult(V.transpose());
+
+        return new Problem(
+                this.problemText,
+                getProblemQuestion(A),
+                getProblemAnswer(A, U, D, V)
         );
     }
 }

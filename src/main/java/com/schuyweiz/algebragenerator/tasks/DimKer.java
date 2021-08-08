@@ -19,14 +19,11 @@ public class DimKer extends MatrixProblem {
     protected String getProblemQuestion(Matrix... matrices) {
         var A = matrices[0];
         var B = matrices[1];
-        var expression = TexUtils.getTex(
-                String.format("A = %s\nB = %s",
+
+        return String.format("A = %s\nB = %s",
                         TexUtils.getMatrixTex(A),
                         TexUtils.getMatrixTex(B)
-                )
         );
-
-        return this.problemText + expression;
     }
 
     @Override
@@ -51,6 +48,7 @@ public class DimKer extends MatrixProblem {
         Matrix B = A.mult(X);
 
         return new Problem(
+                this.problemText,
                 getProblemQuestion(A, B),
                 getProblemAnswer(X)
         );

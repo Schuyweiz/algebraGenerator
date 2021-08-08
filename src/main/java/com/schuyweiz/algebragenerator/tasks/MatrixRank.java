@@ -1,45 +1,49 @@
 package com.schuyweiz.algebragenerator.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
+import com.schuyweiz.algebragenerator.model.Problem;
+import com.schuyweiz.algebragenerator.utility.MatrixUtils;
+import com.schuyweiz.algebragenerator.utility.TexUtils;
+
 import java.util.Random;
 
 public class MatrixRank extends MatrixProblem {
 
-    public MatrixRank(int seed)  {
-        this.rand = new Random(seed);
-        int width  = rand.nextInt(4)+3;
-        int height = rand.nextInt(2)+3;
-        rank = rand.nextInt(height-1)+1;
-
-        this.matrix = Matrix.ofRank(width,height,rank,rand);
-        initialMatrix = getMatrixValues(matrix);
-        matrix.simpleShuffle(rand,-2,2);
-    }
-
-    @Override
-    public String getProblemText() {
-        return "Найти ранг матрицы ";
-    }
-
-    @Override
-    public String getAnswerText() {
-        return "Ранг матрицы равен ";
-    }
-
-    @Override
-    public String getProblemContent() {
-        String matrixString = getMatrixValues(matrix);
-        return texExpression(matrixString);
-    }
-
-    @Override
-    public String getAnswerContent() {
-        return
-                texExpression( String.format("%s rank = %s", initialMatrix, rank));
-    }
-
-    private Matrix matrix;
-    private final String initialMatrix;
+    private final int width;
+    private final int height;
     private final int rank;
 
+    public MatrixRank(int seed)  {
+        super(seed, "Найти ранг матрицы ");
+        this.width = MatrixUtils.basedRandom(3,4,rand);
+        this.height = MatrixUtils.basedRandom(3,2,rand);
+        this.rank = MatrixUtils.basedRandom(1,height-1,rand);
+
+    }
+
+    @Override
+    protected String getProblemQuestion(Matrix... matrices) {
+        var matrix = matrices[0];
+
+        return TexUtils.getMatrixTex(matrix);
+    }
+
+    @Override
+    protected String getProblemAnswer(Matrix... matrices) {
+        var matrix = matrices[0];
+
+        return TexUtils.getMatrixTex(matrix);
+    }
+
+    @Override
+    public Problem generate() {
+        var answerMatrix = Matrix.ofRank(width,height,rank,rand);
+        var questionMatrix = answerMatrix.strongShuffle(rand,-2,2,1);
+
+        return new Problem(
+                this.problemText,
+                getProblemQuestion(questionMatrix),
+                getProblemAnswer(answerMatrix)
+        );
+    }
 }
