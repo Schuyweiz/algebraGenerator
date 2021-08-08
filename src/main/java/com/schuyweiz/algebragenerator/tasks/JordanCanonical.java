@@ -14,7 +14,6 @@ import java.util.stream.IntStream;
 
 public class JordanCanonical extends MatrixProblem {
 
-    private static final int SIZE = 4;
     private final int size;
 
     public JordanCanonical(int seed) {

@@ -5,12 +5,15 @@ import com.schuyweiz.algebragenerator.matrix.Row;
 import com.schuyweiz.algebragenerator.model.Problem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import com.schuyweiz.algebragenerator.utility.TexUtils;
+import org.codehaus.commons.nullanalysis.NotNull;
 import org.matheclipse.core.eval.ExprEvaluator;
 import org.matheclipse.core.expression.F;
 import org.matheclipse.core.expression.FractionSym;
 import org.matheclipse.core.expression.IntegerSym;
 import org.matheclipse.core.interfaces.IExpr;
+import org.springframework.lang.NonNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

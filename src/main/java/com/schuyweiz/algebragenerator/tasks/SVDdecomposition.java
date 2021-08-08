@@ -9,34 +9,20 @@ import org.matheclipse.core.expression.IntegerSym;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.IntStream;
 
 public class SVDdecomposition extends MatrixProblem {
 
-    private final int nU, aU, bU, cU, dU;
-    private final int nV, aV, bV, cV, dV;
     //U^T A V = D
 
 
     public SVDdecomposition(int seed) {
         super(seed, "Найти сингулярное разложение следующей матрицы: ");
-
-        aU = rand.nextInt(2) * 2 + 1;
-        bU = rand.nextInt(2) * 2;
-        cU = rand.nextInt(2) * 2;
-        dU = rand.nextInt(2) * 2;
-        nU = aU * aU + bU * bU + cU * cU + dU * dU;
-
-        aV = rand.nextInt(2) * 2 + 1;
-        bV = rand.nextInt(2) * 2;
-        cV = rand.nextInt(2) * 2;
-        dV = rand.nextInt(2) * 2;
-
-        nV = aV * aV + bV * bV + cV * cV + dV * dV;
-
-
     }
 
-    private Matrix createD() {
+
+    private Matrix createD(int nU, int nV) {
         var list = new ArrayList<>(
                 List.of(
                         ExprUtils.getPositiveRandom(rand, 1, 3),
@@ -53,28 +39,10 @@ public class SVDdecomposition extends MatrixProblem {
         )));
     }
 
-    private Matrix createU() {
-        var order = new ArrayList<>(
-                List.of(
-                        aU, bU, cU, dU
-                ));
-        for (int i = 0; i < order.size(); i++) {
-            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
-        }
+    private Matrix createOrthogonal(ArrayList<Integer> order, int n) {
+        Collections.shuffle(order);
 
-        return Matrix.orthogonal(rand, order, nU);
-    }
-
-    private Matrix createV() {
-        var order = new ArrayList<>(
-                List.of(
-                        aV, bV, cV, dV
-                ));
-        for (int i = 0; i < order.size(); i++) {
-            Collections.swap(order, rand.nextInt(order.size()), rand.nextInt(order.size()));
-        }
-
-        return Matrix.orthogonal(rand, order, nV);
+        return Matrix.orthogonal(rand, order, n);
     }
 
     @Override
@@ -103,9 +71,13 @@ public class SVDdecomposition extends MatrixProblem {
 
     @Override
     public Problem generate() {
-        var U = createU();
-        var V = createV();
-        var D = createD();
+        var argsU = createArgs();
+        var argsV = createArgs();
+        var nU = sumSquare.apply(argsU);
+        var nV = sumSquare.apply(argsV);
+        var U = createOrthogonal(argsU, nU);
+        var V = createOrthogonal(argsV,nV);
+        var D = createD(nU,nV);
         var A = U.mult(D).mult(V.transpose());
 
         return new Problem(
@@ -114,4 +86,11 @@ public class SVDdecomposition extends MatrixProblem {
                 getProblemAnswer(A, U, D, V)
         );
     }
+
+    private ArrayList<Integer> createArgs() {
+        return IntStream.range(0, 4).map(i -> rand.nextInt(2) * 2 + i / 4).collect(ArrayList::new, List::add, List::addAll);
+    }
+
+    private final Function<ArrayList<Integer>, Integer> sumSquare = (list) ->
+            list.stream().mapToInt(Integer::intValue).map(i -> i * i).sum();
 }

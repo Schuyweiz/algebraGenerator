@@ -17,6 +17,8 @@ public class DimKer extends MatrixProblem {
 
     @Override
     protected String getProblemQuestion(Matrix... matrices) {
+        assert matrices.length!=2: "The argument of the getProblemQuestion should contain 2 arguments";
+
         var A = matrices[0];
         var B = matrices[1];
 
@@ -41,7 +43,6 @@ public class DimKer extends MatrixProblem {
     @Override
     public Problem generate() {
         //AX = B
-        //ищем dim  и  ker матрицы X
         this.rank = MatrixUtils.basedRandom(1, 3, rand);
         Matrix A = Matrix.randDiag(SIZE, rand).strongShuffle(rand, -1, 2, 1);
         Matrix X = Matrix.ofRank(SIZE, SIZE, rank, rand);
