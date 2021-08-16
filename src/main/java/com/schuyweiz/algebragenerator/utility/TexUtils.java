@@ -17,4 +17,10 @@ public class TexUtils {
                 .append("\\end{pmatrix}");
         return sb.toString();
     }
+
+    public static String getTex(String expr){
+        return String.format(
+                "$$ %s $$", expr
+        );
+    }
 }
