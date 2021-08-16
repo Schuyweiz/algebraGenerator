@@ -1,14 +1,10 @@
 package com.schuyweiz.algebragenerator.controllers;
 
 import com.schuyweiz.algebragenerator.TasksDocument;
-import com.schuyweiz.algebragenerator.tasks.MatrixAddSubMul;
-import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
-import com.schuyweiz.algebragenerator.tasks.MatrixProblemFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.annotation.SessionScope;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +17,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 @Controller
-@SessionScope
 public class TasksController {
 
     @Autowired
@@ -59,10 +54,10 @@ public class TasksController {
         }
 
         if (type.equals("none")){
-                problem = MatrixProblemFactory.typeof(currentType,seed);
+                problem = MatrixProblemFactory.generateProblem(currentType,seed);
         }
         else
-            problem = MatrixProblemFactory.typeof(type,seed);
+            problem = MatrixProblemFactory.generateProblem(type,seed);
 
         //TODO:track amount of roblems, empty the problems after download
 

@@ -13,6 +13,11 @@ import org.matheclipse.core.interfaces.IExpr;
 
 public class Matrix implements Cloneable{
 
+    @SuppressWarnings(value = "all")
+    public static Matrix ofRank(int width, int rank, Random random) {
+        return Matrix.ofRank(width, width, rank, random);
+    }
+
 
     //region elementary operations on rows
 
@@ -98,7 +103,8 @@ public class Matrix implements Cloneable{
         return new Matrix(newMatrix);
     }
 
-    public static Matrix diag(int width, ArrayList<IExpr> diagonal){
+    public static Matrix diag(ArrayList<IExpr> diagonal){
+        int width = diagonal.size();
         Matrix matrix = identity(width);
         for (int i = 0; i < width; i++) {
             var temp = matrix.rows.get(i).mult(diagonal.get(i));
@@ -112,7 +118,7 @@ public class Matrix implements Cloneable{
         for (int i = 0; i < width; i++) {
             diagonal.add(ExprUtils.getPositiveRandom(rand,-3,3));
         }
-        return Matrix.diag(width,diagonal);
+        return Matrix.diag(diagonal);
     }
 
     public static Matrix orthogonal(Random rand, ArrayList<Integer> order, int n){

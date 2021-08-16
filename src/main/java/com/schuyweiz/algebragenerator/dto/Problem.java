@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator.model;
+package com.schuyweiz.algebragenerator.dto;
 
 
 import com.schuyweiz.algebragenerator.utility.TexUtils;

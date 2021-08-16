@@ -64,6 +64,10 @@
       <artifactId>ejml-ddense</artifactId>
       <version>0.40</version>
     </dependency>
+      <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+      </dependency>
   </dependencies>  
   <build> 
     <plugins> 

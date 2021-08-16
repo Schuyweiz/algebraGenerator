@@ -1,6 +1,6 @@
 package com.schuyweiz.algebragenerator;
 
-import com.schuyweiz.algebragenerator.tasks.MatrixProblem;
+import com.schuyweiz.algebragenerator.model.tasks.MatrixProblem;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
