@@ -1,12 +1,9 @@
-package com.schuyweiz.algebragenerator.tasks;
+package com.schuyweiz.algebragenerator.model.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.model.Problem;
+import com.schuyweiz.algebragenerator.dto.Problem;
 import com.schuyweiz.algebragenerator.utility.MatrixUtils;
 import com.schuyweiz.algebragenerator.utility.TexUtils;
-import jdk.jshell.execution.Util;
-
-import java.util.Random;
 
 public class MatrixAddSubMul extends MatrixProblem{
 

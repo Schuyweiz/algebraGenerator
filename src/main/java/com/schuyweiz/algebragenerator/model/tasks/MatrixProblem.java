@@ -1,11 +1,8 @@
-package com.schuyweiz.algebragenerator.tasks;
+package com.schuyweiz.algebragenerator.model.tasks;
 
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.model.Problem;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Component;
+import com.schuyweiz.algebragenerator.dto.Problem;
 
 import java.util.Random;
 

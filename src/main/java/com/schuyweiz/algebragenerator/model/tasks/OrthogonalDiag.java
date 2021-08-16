@@ -1,7 +1,7 @@
-package com.schuyweiz.algebragenerator.tasks;
+package com.schuyweiz.algebragenerator.model.tasks;
 
 import com.schuyweiz.algebragenerator.matrix.Matrix;
-import com.schuyweiz.algebragenerator.model.Problem;
+import com.schuyweiz.algebragenerator.dto.Problem;
 import com.schuyweiz.algebragenerator.utility.ExprUtils;
 import com.schuyweiz.algebragenerator.utility.TexUtils;
 import org.matheclipse.core.expression.IntegerSym;
@@ -9,7 +9,6 @@ import org.matheclipse.core.expression.IntegerSym;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class OrthogonalDiag extends MatrixProblem {
 

@@ -1,4 +1,4 @@
-package com.schuyweiz.algebragenerator.tasks;
+package com.schuyweiz.algebragenerator.model.tasks;
 
 import com.schuyweiz.algebragenerator.exception.MatrixProblemException;
 
